@@ -93,8 +93,8 @@ tr:hover{{background:#1c2129}}
 <div class="card-sub">{date_cn}</div>
 </div>
 <div class="card">
-<div class="card-label">累计总盈亏 / 收益率</div>
-<div class="card-val {cp_cls}">{cp}<span style="font-size:13px;color:#6e7681">/{cp_pct}%</span></div>
+<div class="card-label">持仓总盈亏 / 已清仓总盈亏</div>
+<div class="card-val {cp_cls}">{cp}<span style="font-size:13px;color:#6e7681">/{closed_pnl}</span></div>
 <div class="card-sub">建仓以来</div>
 </div>
 </div>
@@ -275,7 +275,7 @@ html = HTML.format(
     tv=fmt_w(s.get("total_value")),
     cp=fmt_w(s.get("cum_pnl")),
     cp_cls=cls(s.get("cum_pnl")),
-    cp_pct=round(s["cum_pnl"]/s["total_value"]*100, 2) if s.get("cum_pnl") is not None and s.get("total_value") else "—",
+    closed_pnl=fmt_w(s.get("closed_total_pnl")),
     data_json=json.dumps(d, ensure_ascii=False)
 )
 

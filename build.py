@@ -179,6 +179,19 @@ if not closed_df.empty:
     closed_df = closed_df.drop_duplicates(subset=["代码","清仓日期"] if "清仓日期" in closed_df.columns else ["代码"])
 print(f"已清仓合并: {len(closed_df)} 条")
 
+# 已清仓总盈亏 = 总盈亏列求和
+closed_total_pnl = 0
+pnl_col_name = None
+for c in closed_df.columns:
+    if "总盈亏" in str(c):
+        pnl_col_name = c
+        break
+if pnl_col_name:
+    closed_total_pnl = closed_df[pnl_col_name].sum()
+    print(f"已清仓总盈亏: {closed_total_pnl:,.2f}")
+else:
+    print("⚠️ 未找到总盈亏列")
+
 # ── 6. 已清仓分析 ──
 closed_analysis = {"A股": [], "港股": []}
 closed_daily = []  # 清仓盈亏按日期
@@ -244,7 +257,8 @@ output_data = {
         "day_pnl_rate": day_pnl_rate,
         "cash": round(cash, 2),
         "total_value": round(total_value, 2),
-        "cum_pnl": round(manual_cum_pnl, 2) if manual_cum_pnl is not None else None,   # 空着
+        "cum_pnl": round(manual_cum_pnl, 2) if manual_cum_pnl is not None else None,
+        "closed_total_pnl": round(closed_total_pnl, 2),   # 空着
         "account_value": None,
         "time_weighted_return": None,
         "net_deposit": round(total_net_deposit, 2),
