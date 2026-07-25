@@ -34,37 +34,65 @@ if not excel_files:
 latest_date = excel_files[-1][0]
 latest_file = excel_files[-1][1]
 
-# ── 2. 读取最新 Excel 持仓数据（header=None 精确取C29/D29） ──
+# ── 2. 读取最新 Excel 持仓数据 ──
 raw_holdings = pd.read_excel(latest_file, sheet_name="持仓数据", header=None)
 print(f"持仓数据 shape: {raw_holdings.shape}")
 
-# C29 = row 28 (0-indexed), col 2 = 持有金额
-# D29 = row 28 (0-indexed), col 3 = 当日盈亏
-summary_row = raw_holdings.iloc[28]  # Excel row 29
-market_value_c29 = float(summary_row.iloc[2]) if pd.notna(summary_row.iloc[2]) else 0
-day_pnl_d29 = float(summary_row.iloc[3]) if pd.notna(summary_row.iloc[3]) else 0
-print(f"C29 持仓市值: {market_value_c29:,.0f}")
-print(f"D29 当日盈亏: {day_pnl_d29:,.0f}")
+# 按表头名称定位列（而非固定列号）
+header = raw_holdings.iloc[0].tolist()
+col_map = {}
+for i, h in enumerate(header):
+    if pd.notna(h):
+        col_map[str(h).strip()] = i
+print(f"列映射: 持有金额=col{col_map.get('持有金额')}, 当日盈亏=col{col_map.get('当日盈亏')}")
 
-# 排除"汇总"行，仅保留数据行（row 1..27, col 0 != "汇总"）
+# 定位"汇总"行
+summary_idx = None
+for i in range(len(raw_holdings)):
+    if str(raw_holdings.iloc[i, 0]).strip() == "汇总":
+        summary_idx = i
+        break
+
+if summary_idx is None:
+    print("⚠️ 未找到汇总行，回退到最后一行为汇总")
+    summary_idx = len(raw_holdings) - 1
+
+amt_col = col_map["持有金额"]
+pnl_col = col_map["当日盈亏"]
+market_value_c29 = float(raw_holdings.iloc[summary_idx, amt_col]) if pd.notna(raw_holdings.iloc[summary_idx, amt_col]) else 0
+day_pnl_d29 = float(raw_holdings.iloc[summary_idx, pnl_col]) if pd.notna(raw_holdings.iloc[summary_idx, pnl_col]) else 0
+print(f"汇总行(行{summary_idx+1}): 持有金额={market_value_c29:,.0f}, 当日盈亏={day_pnl_d29:,.0f}")
+
+# 排除"汇总"行，仅保留数据行
 data_rows = raw_holdings[raw_holdings.iloc[:, 0] != "汇总"].copy()
-data_rows = data_rows.iloc[1:]  # 去掉标题行(row 0)
+data_rows = data_rows.iloc[1:]  # 去掉标题行
 print(f"持仓数据行（排除汇总）: {len(data_rows)} 条")
 
-# ── 3. 持仓列表（仅9列：代码/名称/仓位占比/最新价/持有数量/持有金额/持有盈亏/持有盈亏率/持仓天数） ──
+# ── 3. 持仓列表（按表头名称定位9列） ──
+# 代码/名称/仓位占比/最新价/持有数量/持有金额/持有盈亏/持有盈亏率/持仓天数
+holdings_cols = {
+    "代码": 0, "名称": 1,
+    "仓位占比": col_map.get("仓位占比", 16),
+    "最新价": col_map.get("最新价", 20),
+    "持有数量": col_map.get("持有数量", 17),
+    "持有金额": col_map.get("持有金额", 2),
+    "持有盈亏": col_map.get("持有盈亏", 9),
+    "持有盈亏率": col_map.get("持有盈亏率", 10),
+    "持仓天数": col_map.get("持仓天数", 18),
+}
 holdings_list = []
 for _, row in data_rows.iterrows():
     try:
         h = {
-            "code": str(row.iloc[0]),
-            "name": str(row.iloc[1]),
-            "weight": float(row.iloc[16]) * 100 if pd.notna(row.iloc[16]) else 0,   # 仓位占比→百分比
-            "price": float(row.iloc[20]) if pd.notna(row.iloc[20]) else 0,           # 最新价
-            "qty": int(float(row.iloc[17])) if pd.notna(row.iloc[17]) else 0,        # 持有数量
-            "market_value": float(row.iloc[2]) if pd.notna(row.iloc[2]) else 0,      # 持有金额
-            "hold_pnl": float(row.iloc[9]) if pd.notna(row.iloc[9]) else 0,          # 持有盈亏
-            "hold_pnl_rate": float(row.iloc[10]) * 100 if pd.notna(row.iloc[10]) else 0,  # 持有盈亏率
-            "days": int(float(row.iloc[18])) if pd.notna(row.iloc[18]) else 0,       # 持仓天数
+            "code": str(row.iloc[holdings_cols["代码"]]),
+            "name": str(row.iloc[holdings_cols["名称"]]),
+            "weight": float(row.iloc[holdings_cols["仓位占比"]]) * 100 if pd.notna(row.iloc[holdings_cols["仓位占比"]]) else 0,
+            "price": float(row.iloc[holdings_cols["最新价"]]) if pd.notna(row.iloc[holdings_cols["最新价"]]) else 0,
+            "qty": int(float(row.iloc[holdings_cols["持有数量"]])) if pd.notna(row.iloc[holdings_cols["持有数量"]]) else 0,
+            "market_value": float(row.iloc[holdings_cols["持有金额"]]) if pd.notna(row.iloc[holdings_cols["持有金额"]]) else 0,
+            "hold_pnl": float(row.iloc[holdings_cols["持有盈亏"]]) if pd.notna(row.iloc[holdings_cols["持有盈亏"]]) else 0,
+            "hold_pnl_rate": float(row.iloc[holdings_cols["持有盈亏率"]]) * 100 if pd.notna(row.iloc[holdings_cols["持有盈亏率"]]) else 0,
+            "days": int(float(row.iloc[holdings_cols["持仓天数"]])) if pd.notna(row.iloc[holdings_cols["持仓天数"]]) else 0,
         }
         holdings_list.append(h)
     except Exception as e:
@@ -105,6 +133,38 @@ cash = abs(float(latest_repo["发生金额"]))
 total_value = market_value_c29 + cash
 print(f"现金(最新回购): {cash:,.0f}")
 print(f"总市值: {total_value:,.0f}")
+
+# ── 读取手动覆盖配置 ──
+CONFIG_FILE = os.path.join(BASE_DIR, "config.json")
+config = {}
+if os.path.exists(CONFIG_FILE):
+    with open(CONFIG_FILE) as f:
+        config = json.load(f)
+    print(f"配置覆盖: {config}")
+
+if config.get("market_value"):
+    market_value_c29 = float(config["market_value"])
+    print(f"  → 持仓市值覆盖: {market_value_c29:,.2f}")
+if config.get("total_value"):
+    total_value = float(config["total_value"])
+    cash = total_value - market_value_c29
+    print(f"  → 总市值覆盖: {total_value:,.2f}, 现金推算: {cash:,.2f}")
+if config.get("cum_pnl") is not None:
+    manual_cum_pnl = float(config["cum_pnl"])
+    print(f"  → 累计总盈亏覆盖: {manual_cum_pnl:,.2f}")
+else:
+    manual_cum_pnl = None
+
+# 提醒缺失的手动数据
+missing = []
+if not config.get("market_value"): missing.append("股票持仓市值")
+if not config.get("total_value"): missing.append("总市值")
+if config.get("cum_pnl") is None: missing.append("累计总盈亏")
+if missing:
+    print(f"\n⚠️ 缺少手动精确数据: {', '.join(missing)}")
+    print("  → 已使用 Excel 自动提取值作为近似")
+    print(f"  → 当前: 持仓市值={market_value_c29:,.0f}, 总市值={total_value:,.0f}, 累计总盈亏=—")
+    print("  → 请在 config.json 中填写精确值后重新运行\n")
 
 # ── 5. 合并所有已清仓数据 ──
 all_closed = []
@@ -184,7 +244,7 @@ output_data = {
         "day_pnl_rate": day_pnl_rate,
         "cash": round(cash, 2),
         "total_value": round(total_value, 2),
-        "cum_pnl": None,   # 空着
+        "cum_pnl": round(manual_cum_pnl, 2) if manual_cum_pnl is not None else None,   # 空着
         "account_value": None,
         "time_weighted_return": None,
         "net_deposit": round(total_net_deposit, 2),

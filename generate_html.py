@@ -73,19 +73,14 @@ tr:hover{{background:#1c2129}}
 <div class="section-title">📋 汇总</div>
 <div class="cards">
 <div class="card">
-<div class="card-label">持仓市值 / 占比</div>
+<div class="card-label">股票持仓市值 / 占比</div>
 <div class="card-val">{mv}<span style="font-size:13px;color:#6e7681">/{mv_pct}%</span></div>
 <div class="card-sub">共 {hc} 只持仓</div>
 </div>
 <div class="card">
-<div class="card-label">当日盈亏 / 收益率</div>
-<div class="card-val {dp_cls}">{dp}<span style="font-size:13px;color:#6e7681">/{dp_rate}%</span></div>
-<div class="card-sub">{date_cn}</div>
-</div>
-<div class="card">
 <div class="card-label">现金 / 占比</div>
 <div class="card-val">{cash}<span style="font-size:13px;color:#6e7681">/{cash_pct}%</span></div>
-<div class="card-sub">逆回购</div>
+<div class="card-sub">国债逆回购</div>
 </div>
 <div class="card">
 <div class="card-label">总市值</div>
@@ -93,8 +88,13 @@ tr:hover{{background:#1c2129}}
 <div class="card-sub">股票+现金</div>
 </div>
 <div class="card">
-<div class="card-label">累计总盈亏</div>
-<div class="card-val placeholder">—</div>
+<div class="card-label">当日盈亏 / 收益率</div>
+<div class="card-val {dp_cls}">{dp}<span style="font-size:13px;color:#6e7681">/{dp_rate}%</span></div>
+<div class="card-sub">{date_cn}</div>
+</div>
+<div class="card">
+<div class="card-label">累计总盈亏 / 收益率</div>
+<div class="card-val {cp_cls}">{cp}<span style="font-size:13px;color:#6e7681">/{cp_pct}%</span></div>
 <div class="card-sub">建仓以来</div>
 </div>
 </div>
@@ -273,6 +273,9 @@ html = HTML.format(
     cash=fmt_w(s.get("cash")),
     cash_pct=round(s["cash"]/s["total_value"]*100, 1) if s.get("cash") and s.get("total_value") else "—",
     tv=fmt_w(s.get("total_value")),
+    cp=fmt_w(s.get("cum_pnl")),
+    cp_cls=cls(s.get("cum_pnl")),
+    cp_pct=round(s["cum_pnl"]/s["total_value"]*100, 2) if s.get("cum_pnl") is not None and s.get("total_value") else "—",
     data_json=json.dumps(d, ensure_ascii=False)
 )
 
