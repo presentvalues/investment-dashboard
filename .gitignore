@@ -1,8 +1,7 @@
 # Excel数据文件
 raw/*.xlsx
 
-# 构建输出
-output/*.HTML
+# 构建输出（data.json 不入库）
 output/data.json
 
 # Python缓存
