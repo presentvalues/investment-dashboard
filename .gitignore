@@ -1,0 +1,13 @@
+# Excel数据文件
+raw/*.xlsx
+
+# 构建输出
+output/*.HTML
+output/data.json
+
+# Python缓存
+__pycache__/
+*.pyc
+
+# macOS
+.DS_Store
