@@ -98,6 +98,14 @@ for _, t in trades.iterrows():
 total_net_deposit = sum(net_deposits)
 print(f"累计净入金: {total_net_deposit:,.2f}")
 
+# 现金 = 最新国债逆回购行的发生金额（绝对值）
+repo_rows = trades[trades["交易类别"].str.contains("回购", na=False)]
+latest_repo = repo_rows.iloc[-1]
+cash = abs(float(latest_repo["发生金额"]))
+total_value = market_value_c29 + cash
+print(f"现金(最新回购): {cash:,.0f}")
+print(f"总市值: {total_value:,.0f}")
+
 # ── 5. 合并所有已清仓数据 ──
 all_closed = []
 for date_str, fpath in excel_files:
@@ -168,12 +176,14 @@ day_pnl_rate = round(day_pnl_d29 / (market_value_c29 - day_pnl_d29) * 100, 2) if
 
 output_data = {
     "title": "辰影的自由之路持仓每日盈亏看板",
-    "generate_time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+    "generate_time": (datetime.now() + __import__('datetime').timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
     "latest_date": latest_date,
     "summary": {
         "market_value": round(market_value_c29, 2),
         "day_pnl": round(day_pnl_d29, 2),
         "day_pnl_rate": day_pnl_rate,
+        "cash": round(cash, 2),
+        "total_value": round(total_value, 2),
         "cum_pnl": None,   # 空着
         "account_value": None,
         "time_weighted_return": None,
