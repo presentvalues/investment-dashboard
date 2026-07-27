@@ -161,6 +161,12 @@ tr:hover{{background:#1c2129}}
 </div>
 </div>
 
+<!-- ── 历史年度盈亏 ── -->
+<div class="section">
+<div class="section-title">📈 历史年度盈亏（2021 至今）</div>
+<div id="yearly-chart" style="width:100%;height:360px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
+</div>
+
 <div class="footer">辰影的自由之路 ｜ 数据基于银河证券导出 ｜ 自动生成于 {generate_time}</div>
 
 <script>
@@ -370,6 +376,8 @@ function renderReturnChart() {{
         renderClosedChart('closed-a-chart', D.closed_merged.a_stock, 'A股');
         renderClosedChart('closed-h-chart', D.closed_merged.h_stock, '港股');
       }}
+      // 年度盈亏图表
+      if (D.yearly_data) renderYearlyChart();
     }}
   }}
   tryRenderChart();
@@ -384,6 +392,7 @@ function renderReturnChart() {{
               renderClosedFallback('closed-a-chart', D.closed_merged.a_stock);
               renderClosedFallback('closed-h-chart', D.closed_merged.h_stock);
             }}
+            if (D.yearly_data) renderYearlyFallback();
           }}
         }}, 3000);
       }}
@@ -517,6 +526,118 @@ function renderClosedFallback(containerId, data) {{
   el.innerHTML = html;
   el.style.display = 'block';
   el.style.padding = '8px';
+}}
+
+// ── 历史年度盈亏图（竖向柱状+双折线）──
+function renderYearlyChart() {{
+  var yd = D.yearly_data;
+  if (!yd || !yd.years || yd.years.length === 0) return;
+  var years = yd.years.map(function(y) {{ return y.year.toString(); }});
+  var pnlData = yd.years.map(function(y) {{ return (y.pnl / 10000); }});
+  var twrData = yd.twr.map(function(t) {{ return t.value; }});
+  var mwrData = yd.mwr.map(function(m) {{ return m.value; }});
+
+  // 动态计算左轴（盈亏）范围，参考收益率板块规则
+  var pnlAbs = Math.max(Math.abs(Math.min.apply(null, pnlData)), Math.abs(Math.max.apply(null, pnlData)), 0.1);
+  var leftTop = Math.ceil(pnlAbs / 5) * 5;
+  leftTop = Math.max(leftTop, 5);
+  var leftStep = leftTop / 5;
+
+  // 右轴（收益率）范围
+  var retAll = twrData.concat(mwrData);
+  var retMin = Math.min.apply(null, retAll), retMax = Math.max.apply(null, retAll);
+  var rightTop = Math.ceil(Math.max(Math.abs(retMin), Math.abs(retMax), 0.01) / 5) * 5;
+  rightTop = Math.max(rightTop, 5);
+  var rightStep = rightTop / 5;
+
+  var el = document.getElementById('yearly-chart');
+  var chart = echarts.init(el);
+  chart.setOption({{
+    tooltip: {{
+      trigger: 'axis',
+      formatter: function(params) {{
+        var s = '<b>' + params[0].axisValue + '</b><br/>';
+        params.forEach(function(p) {{
+          if (p.seriesName === '当年盈亏') {{
+            s += p.marker + ' ' + p.seriesName + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(2) + '万<br/>';
+          }} else {{
+            s += p.marker + ' ' + p.seriesName + ': ' + p.value.toFixed(2) + '%<br/>';
+          }}
+        }});
+        return s;
+      }}
+    }},
+    legend: {{ data: ['当年盈亏','资金加权(MWR)','时间加权(TWR)'], top: 0, textStyle: {{ color: '#c9d1d9' }} }},
+    grid: {{ left: '10%', right: '10%', top: '15%', bottom: '5%' }},
+    xAxis: {{ type: 'category', data: years, axisLabel: {{ color: '#6e7681', fontSize: 10 }} }},
+    yAxis: [
+      {{
+        type: 'value', min: -(leftTop), max: leftTop, interval: leftStep,
+        name: '盈亏(万)', nameTextStyle: {{ color: '#6e7681', fontSize: 10 }},
+        axisLabel: {{ formatter: function(v) {{ return v.toFixed(0); }}, color: '#6e7681', fontSize: 10 }},
+        splitLine: {{ lineStyle: {{ color: '#21262d' }} }}
+      }},
+      {{
+        type: 'value', min: -(rightTop), max: rightTop, interval: rightStep,
+        name: '收益率(%)', nameTextStyle: {{ color: '#6e7681', fontSize: 10 }},
+        axisLabel: {{ formatter: function(v) {{ return v.toFixed(0) + '%'; }}, color: '#6e7681', fontSize: 10 }},
+        splitLine: {{ show: false }}
+      }}
+    ],
+    series: [
+      {{
+        name: '当年盈亏', type: 'bar', yAxisIndex: 0,
+        data: pnlData.map(function(v) {{
+          return {{ value: v, itemStyle: {{ color: v >= 0 ? '#f85149' : '#3fb950' }} }};
+        }}),
+        barWidth: '40%'
+      }},
+      {{
+        name: '资金加权(MWR)', type: 'line', yAxisIndex: 1,
+        data: mwrData,
+        lineStyle: {{ color: '#d2991d', width: 2 }},
+        itemStyle: {{ color: '#d2991d' }},
+        symbol: 'circle', symbolSize: 7
+      }},
+      {{
+        name: '时间加权(TWR)', type: 'line', yAxisIndex: 1,
+        data: twrData,
+        lineStyle: {{ color: '#58a6ff', width: 2 }},
+        itemStyle: {{ color: '#58a6ff' }},
+        symbol: 'diamond', symbolSize: 7
+      }}
+    ]
+  }});
+  window.addEventListener('resize', function() {{ chart.resize(); }});
+}}
+
+// 年度盈亏离线降级
+function renderYearlyFallback() {{
+  var yd = D.yearly_data;
+  if (!yd || !yd.years) return;
+  var el = document.getElementById('yearly-chart');
+  var html = '<table style="width:100%;border-collapse:collapse;font-size:12px;color:#c9d1d9">';
+  html += '<thead><tr style="background:#21262d">';
+  html += '<th style="padding:6px 8px;border-bottom:1px solid #30363d">年份</th>';
+  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">当年盈亏</th>';
+  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">TWR</th>';
+  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">MWR</th>';
+  html += '</tr></thead><tbody>';
+  yd.years.forEach(function(y, i) {{
+    var pnl = y.pnl / 10000;
+    var pc = pnl >= 0 ? '#f85149' : '#3fb950';
+    html += '<tr>';
+    html += '<td style="padding:5px 8px;border-bottom:1px solid #21262d">' + y.year + '</td>';
+    html += '<td style="padding:5px 8px;text-align:right;border-bottom:1px solid #21262d;color:' + pc + '">' + (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '万</td>';
+    html += '<td style="padding:5px 8px;text-align:right;border-bottom:1px solid #21262d;color:#58a6ff">' + yd.twr[i].value.toFixed(2) + '%</td>';
+    html += '<td style="padding:5px 8px;text-align:right;border-bottom:1px solid #21262d;color:#d2991d">' + yd.mwr[i].value.toFixed(2) + '%</td>';
+    html += '</tr>';
+  }});
+  html += '</tbody></table>';
+  html += '<div style="text-align:center;font-size:10px;color:#484f58;margin-top:8px">离线模式 · 联网可显示交互图表</div>';
+  el.innerHTML = html;
+  el.style.display = 'block';
+  el.style.padding = '12px';
 }}
 </script>
 </body>

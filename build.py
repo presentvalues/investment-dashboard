@@ -300,6 +300,14 @@ if os.path.exists(INDEX_FILE):
 # ── 9. 组装 JSON ──
 day_pnl_rate = round(day_pnl_d29 / (market_value_c29 - day_pnl_d29) * 100, 2) if (market_value_c29 - day_pnl_d29) != 0 else 0
 
+# ── 读取年度盈亏数据 ──
+YEARLY_FILE = os.path.join(BASE_DIR, "yearly_data.json")
+yearly_data = None
+if os.path.exists(YEARLY_FILE):
+    with open(YEARLY_FILE) as f:
+        yearly_data = json.load(f)
+    print(f"年度盈亏数据: {len(yearly_data.get('years', []))} 年")
+
 output_data = {
     "title": "辰影的自由之路持仓每日盈亏看板",
     "generate_time": (datetime.now() + __import__('datetime').timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
@@ -319,6 +327,7 @@ output_data = {
     "holdings": holdings_list,
     "closed_analysis": closed_analysis,
     "closed_merged": closed_merged,
+    "yearly_data": yearly_data,
     "cum_pnl_seq": cum_pnl_seq,
     "yearly_data": yearly_data,
     "return_series": return_series,
