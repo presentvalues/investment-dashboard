@@ -170,7 +170,7 @@ if missing:
 all_closed = []
 for date_str, fpath in excel_files:
     try:
-        df = pd.read_excel(fpath, sheet_name="已清仓", header=0)
+        df = pd.read_excel(fpath, sheet_name="已清仓", header=0, dtype={"代码": str})
         all_closed.append(df)
     except: pass
 
@@ -232,17 +232,70 @@ if not closed_df.empty:
             yearly_pnl[y] += pnl_v
 yearly_data = [{"year": y, "pnl": round(p, 2)} for y, p in sorted(yearly_pnl.items())]
 
-# ── 8. 加载指数数据 ──
-with open(INDEX_FILE) as f:
-    index_raw = json.load(f)
+# ── 7.5 已清仓盈亏合并分析（按代码合并，A/H分类，盈亏前5）──
+closed_merged = {"summary": {}, "a_stock": [], "h_stock": []}
+if not closed_df.empty and pnl_col_name:
+    # 只用最新 Excel 的已清仓数据（避免跨文件重复）
+    latest_closed = pd.read_excel(latest_file, sheet_name="已清仓", header=0, dtype={"代码": str})
+    # 按代码+名称分组求和
+    grp = latest_closed.groupby(["代码", "名称"])[pnl_col_name].sum().reset_index()
+    grp.columns = ["code", "name", "pnl"]
+    # A/H分类：6位代码=A股，5位代码=港股
+    a_list, h_list = [], []
+    for _, r in grp.iterrows():
+        code_str = str(r["code"])
+        entry = {"code": code_str, "name": str(r["name"]), "pnl": round(float(r["pnl"]), 2)}
+        if len(code_str) == 6:
+            a_list.append(entry)
+        else:
+            h_list.append(entry)
+    # 汇总
+    all_pnl = sum(x["pnl"] for x in a_list + h_list)
+    a_total = sum(x["pnl"] for x in a_list)
+    h_total = sum(x["pnl"] for x in h_list)
+    stock_count = len(a_list) + len(h_list)
+    closed_merged["summary"] = {
+        "count": stock_count, "total_pnl": round(all_pnl, 2),
+        "a_total": round(a_total, 2), "h_total": round(h_total, 2),
+    }
+    # 取盈亏前5
+    def top5_profit_loss(items):
+        profit = sorted([x for x in items if x["pnl"] > 0], key=lambda x: -x["pnl"])[:5]
+        loss = sorted([x for x in items if x["pnl"] < 0], key=lambda x: -x["pnl"])[:5]  # 亏损低→高
+        return {"profit": profit, "loss": loss}
+    closed_merged["a_stock"] = top5_profit_loss(a_list)
+    closed_merged["h_stock"] = top5_profit_loss(h_list)
+    print(f"已清仓合并: {stock_count}只, 总盈亏={all_pnl:,.2f}, A股={a_total:,.2f}, 港股={h_total:,.2f}")
 
-def normalize_index(data, start_date="2024-01-02"):
-    dates = sorted(data.keys())
-    if start_date not in data: start_date = dates[0]
-    base = data[start_date]
-    return {d: round(v / base * 100, 2) for d, v in data.items()}
-
-index_norm = {name: normalize_index(index_raw[name]) for name in ["沪深300","创业板指","上证指数"] if name in index_raw}
+# ── 8. 账户收益率序列 ──
+return_series = []
+if os.path.exists(INDEX_FILE):
+    with open(INDEX_FILE) as f:
+        idx_cfg = json.load(f)
+    baseline_date = idx_cfg.get("baseline_date")
+    baseline_tv = idx_cfg.get("baseline_total_value")
+    idx_series = idx_cfg.get("series", [])
+    if baseline_date and baseline_tv and idx_series:
+        # 计算每日收益率（基准日为0%，总市值来源于 index_data.json 中的截图数据）
+        for item in idx_series:
+            date_str = item["date"]
+            tv = item.get("total_value")
+            account_ret = round((tv / baseline_tv - 1) * 100, 2) if tv else None
+            base_sh = idx_series[0]["shanghai"]
+            base_csi = idx_series[0]["csi300"]
+            base_cx = idx_series[0].get("chinext")
+            sh_ret = round((item["shanghai"] / base_sh - 1) * 100, 2)
+            csi_ret = round((item["csi300"] / base_csi - 1) * 100, 2)
+            cx_ret = round((item["chinext"] / base_cx - 1) * 100, 2) if base_cx and item.get("chinext") else None
+            return_series.append({
+                "date": date_str,
+                "account": account_ret,
+                "shanghai": sh_ret,
+                "csi300": csi_ret,
+                "chinext": cx_ret,
+                "total_value": tv,
+            })
+        print(f"收益率序列: {len(return_series)} 个数据点")
 
 # ── 9. 组装 JSON ──
 day_pnl_rate = round(day_pnl_d29 / (market_value_c29 - day_pnl_d29) * 100, 2) if (market_value_c29 - day_pnl_d29) != 0 else 0
@@ -265,9 +318,10 @@ output_data = {
     },
     "holdings": holdings_list,
     "closed_analysis": closed_analysis,
+    "closed_merged": closed_merged,
     "cum_pnl_seq": cum_pnl_seq,
     "yearly_data": yearly_data,
-    "index_normalized": index_norm,
+    "return_series": return_series,
 }
 
 with open(os.path.join(OUTPUT_DIR, "data.json"), "w") as f:

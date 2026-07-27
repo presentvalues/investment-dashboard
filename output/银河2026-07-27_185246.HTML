@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>辰影的自由之路持仓每日盈亏看板</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#0d1117;color:#c9d1d9;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;padding:12px;max-width:1200px;margin:0 auto}
+h1{text-align:center;font-size:18px;color:#f0f6fc;margin:8px 0 3px;letter-spacing:1px}
+.subtitle{text-align:center;font-size:11px;color:#6e7681;margin-bottom:14px}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:16px}
+.card{background:#161b22;border:1px solid #30363d;border-radius:6px;padding:10px 8px;text-align:center}
+.card-label{font-size:10px;color:#6e7681;margin-bottom:2px}
+.card-val{font-size:18px;font-weight:700;color:#f0f6fc;line-height:1.2}
+.card-val.up{color:#f85149}
+.card-val.down{color:#3fb950}
+.card-sub{font-size:10px;color:#6e7681;margin-top:1px}
+.section{margin-bottom:20px}
+.section-title{font-size:14px;font-weight:600;color:#f0f6fc;margin-bottom:8px;padding-left:8px;border-left:3px solid #58a6ff}
+table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;background:#161b22;border-radius:8px;overflow:hidden}
+.filter-bar{display:flex;gap:4px;margin-bottom:6px;align-items:center}
+.filter-bar input{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 4px;border-radius:4px;font-size:11px;min-width:0}
+.filter-bar select{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 6px;border-radius:4px;font-size:11px}
+.filter-active{border-color:#58a6ff!important;box-shadow:0 0 0 1px #58a6ff}
+.sort-arrow{font-size:10px;margin-left:2px;opacity:0.5}
+.sort-arrow.active{opacity:1;color:#58a6ff}
+th{background:#21262d;color:#c9d1d9;padding:8px 4px;text-align:center;font-weight:500;border-bottom:1px solid #30363d;white-space:nowrap;cursor:pointer;user-select:none;position:sticky;top:0;z-index:1}
+th:hover{background:#2d3741}
+th:first-child,th:nth-child(2){text-align:left}
+td{padding:6px 4px;text-align:center;border-bottom:1px solid #21262d;white-space:nowrap;font-size:12px}
+td:first-child,td:nth-child(2){text-align:left}
+tr:hover{background:#1c2129}
+.positive{color:#f85149}
+.negative{color:#3fb950}
+.footer{text-align:center;font-size:10px;color:#484f58;margin-top:24px;padding:12px 0;border-top:1px solid #21262d}
+.placeholder{color:#484f58;font-size:18px}
+.no-result{text-align:center;padding:20px;color:#6e7681;font-size:13px}
+@media(max-width:768px){
+  .cards{grid-template-columns:repeat(3,1fr)}
+  .card-val{font-size:15px}
+  .card{padding:8px 6px}
+  th,td{font-size:11px;padding:5px 4px}
+}
+@media(max-width:480px){
+  .cards{grid-template-columns:repeat(2,1fr);gap:5px}
+  .card-val{font-size:14px}
+  .card-label{font-size:9px}
+  h1{font-size:16px}
+  body{padding:8px}
+}
+</style>
+</head>
+<body>
+
+<h1>辰影的自由之路持仓每日盈亏看板</h1>
+<p class="subtitle">数据日期: 2026-07-27 ｜ 生成时间: 2026-07-27 18:52:45 ｜ 数据来源: 银河证券</p>
+
+<!-- ── 汇总卡片 ── -->
+<div class="section">
+<div class="section-title">📋 汇总</div>
+<div class="cards">
+<div class="card">
+<div class="card-label">股票持仓市值 / 占比</div>
+<div class="card-val">94.1万<span style="font-size:13px;color:#6e7681">/97.1%</span></div>
+<div class="card-sub">共 27 只持仓</div>
+</div>
+<div class="card">
+<div class="card-label">现金 / 占比</div>
+<div class="card-val">2.8万<span style="font-size:13px;color:#6e7681">/2.9%</span></div>
+<div class="card-sub">国债逆回购</div>
+</div>
+<div class="card">
+<div class="card-label">总市值</div>
+<div class="card-val">96.9万</div>
+<div class="card-sub">股票+现金</div>
+</div>
+<div class="card">
+<div class="card-label">当日盈亏 / 收益率</div>
+<div class="card-val down">-105<span style="font-size:13px;color:#6e7681">/-0.01%</span></div>
+<div class="card-sub">2026年7月27日</div>
+</div>
+<div class="card">
+<div class="card-label">持仓总盈亏 / 已清仓总盈亏</div>
+<div class="card-val down">-1.2万<span style="font-size:13px;color:#6e7681">/8.4万</span></div>
+<div class="card-sub">建仓以来</div>
+</div>
+</div>
+</div>
+
+<!-- ── 当前持仓表格 ── -->
+<div class="section">
+<div class="section-title">📋 当前持仓 <span style="font-size:11px;color:#6e7681;font-weight:400;margin-left:8px">点击表头排序 | 输入关键词筛选</span></div>
+<div class="filter-bar">
+  <button onclick="resetDefault()" style="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;white-space:nowrap">↻ 默认</button>
+  <input type="text" id="f-code" placeholder="代码" style="width:70px">
+  <input type="text" id="f-name" placeholder="名称" style="width:90px">
+  <input type="text" id="f-weight" placeholder="仓位≥%" style="width:60px">
+  <input type="text" id="f-price" placeholder="现价≥" style="width:60px">
+  <input type="text" id="f-qty" placeholder="数量≥" style="width:60px">
+  <input type="text" id="f-mv" placeholder="市值≥" style="width:65px">
+  <input type="text" id="f-pnl" placeholder="盈亏≥" style="width:60px">
+  <input type="text" id="f-pnlrate" placeholder="盈亏率≥" style="width:65px">
+  <input type="text" id="f-days" placeholder="天数≥" style="width:50px">
+  <button onclick="clearFilters()" style="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;white-space:nowrap">✕</button>
+</div>
+<div style="background:#161b22;border:1px solid #30363d;border-radius:8px;overflow-x:auto">
+<table id="holdings-table">
+<thead><tr>
+<th data-col="code">代码</th>
+<th data-col="name">名称</th>
+<th data-col="weight">仓位占比</th>
+<th data-col="price">最新价</th>
+<th data-col="qty">持有数量</th>
+<th data-col="market_value">持有金额</th>
+<th data-col="hold_pnl">持有盈亏</th>
+<th data-col="hold_pnl_rate">持有盈亏率</th>
+<th data-col="days">持仓天数</th>
+</tr></thead>
+<tbody id="holdings-body"></tbody>
+</table>
+</div>
+</div>
+
+<!-- ── 账户收益率 ── -->
+<div class="section">
+<div class="section-title">📈 账户收益率 <span style="font-size:11px;color:#6e7681;font-weight:400;margin-left:8px">基准 2026年7月24日 = 0%</span></div>
+<div id="return-chart" style="width:100%;height:360px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px"></div>
+</div>
+
+<div class="footer">辰影的自由之路 ｜ 数据基于银河证券导出 ｜ 自动生成于 2026-07-27 18:52:45</div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.0/dist/echarts.min.js"></script>
+
+<script>
+const D = {"title": "辰影的自由之路持仓每日盈亏看板", "generate_time": "2026-07-27 18:52:45", "latest_date": "2026-07-27", "summary": {"market_value": 940941.4, "day_pnl": -105.19, "day_pnl_rate": -0.01, "cash": 28370.22, "total_value": 969311.62, "cum_pnl": -11998.9, "closed_total_pnl": 83944.12, "account_value": null, "time_weighted_return": null, "net_deposit": 5130163.58}, "holdings": [{"code": "000807", "name": "云铝股份", "weight": 24.05, "price": 25.62, "qty": 9100, "market_value": 233142.0, "hold_pnl": -4056.47, "hold_pnl_rate": -1.71, "days": 256}, {"code": "600900", "name": "长江电力", "weight": 20.47, "price": 28.35, "qty": 7000, "market_value": 198450.0, "hold_pnl": 21702.98, "hold_pnl_rate": 12.280000000000001, "days": 239}, {"code": "000933", "name": "神火股份", "weight": 8.37, "price": 25.35, "qty": 3200, "market_value": 81120.0, "hold_pnl": -12679.14, "hold_pnl_rate": -13.52, "days": 62}, {"code": "00902", "name": "华能国际", "weight": 5.29, "price": 5.93, "qty": 10000, "market_value": 51235.2, "hold_pnl": -264.37, "hold_pnl_rate": -0.51, "days": 176}, {"code": "01898", "name": "中煤能源", "weight": 4.81, "price": 10.8, "qty": 5000, "market_value": 46656.0, "hold_pnl": 857.96, "hold_pnl_rate": 1.87, "days": 165}, {"code": "01030", "name": "新城发展", "weight": 4.02, "price": 1.41, "qty": 32000, "market_value": 38983.68, "hold_pnl": -16729.32, "hold_pnl_rate": -30.03, "days": 239}, {"code": "02313", "name": "申洲国际", "weight": 3.47, "price": 43.26, "qty": 900, "market_value": 33638.98, "hold_pnl": -12273.85, "hold_pnl_rate": -26.729999999999997, "days": 266}, {"code": "159938", "name": "医药", "weight": 2.58, "price": 0.639, "qty": 39200, "market_value": 25048.8, "hold_pnl": -185.44, "hold_pnl_rate": -0.73, "days": 267}, {"code": "512170", "name": "医疗ETF", "weight": 2.39, "price": 0.323, "qty": 71700, "market_value": 23159.1, "hold_pnl": 1066.9, "hold_pnl_rate": 4.83, "days": 276}, {"code": "03690", "name": "美团-W", "weight": 2.39, "price": 89.3, "qty": 300, "market_value": 23146.56, "hold_pnl": -8067.89, "hold_pnl_rate": -25.85, "days": 228}, {"code": "001286", "name": "陕西能源", "weight": 2.36, "price": 10.4, "qty": 2200, "market_value": 22880.0, "hold_pnl": 2252.16, "hold_pnl_rate": 10.92, "days": 246}, {"code": "600595", "name": "中孚实业", "weight": 2.26, "price": 6.27, "qty": 3500, "market_value": 21945.0, "hold_pnl": 1537.05, "hold_pnl_rate": 7.53, "days": 34}, {"code": "600887", "name": "伊利股份", "weight": 2.15, "price": 26.06, "qty": 800, "market_value": 20848.0, "hold_pnl": 41.9, "hold_pnl_rate": 0.2, "days": 266}, {"code": "09988", "name": "阿里巴巴", "weight": 1.9800000000000002, "price": 111.0, "qty": 200, "market_value": 19180.8, "hold_pnl": 555.43, "hold_pnl_rate": 2.98, "days": 32}, {"code": "159941", "name": "纳指ETF", "weight": 1.92, "price": 1.579, "qty": 11800, "market_value": 18632.2, "hold_pnl": 6036.0, "hold_pnl_rate": 47.94, "days": 316}, {"code": "02015", "name": "理想汽车", "weight": 1.71, "price": 48.08, "qty": 400, "market_value": 16616.45, "hold_pnl": -13370.47, "hold_pnl_rate": -44.59, "days": 228}, {"code": "515180", "name": "100红利", "weight": 1.06, "price": 1.391, "qty": 7400, "market_value": 10293.4, "hold_pnl": 658.08, "hold_pnl_rate": 6.83, "days": 278}, {"code": "512890", "name": "红利低波", "weight": 1.01, "price": 1.167, "qty": 8400, "market_value": 9802.8, "hold_pnl": -323.7, "hold_pnl_rate": -3.2, "days": 267}, {"code": "01448", "name": "福寿园", "weight": 0.9400000000000001, "price": 2.64, "qty": 4000, "market_value": 9123.84, "hold_pnl": -1780.26, "hold_pnl_rate": -16.33, "days": 235}, {"code": "601006", "name": "大秦铁路", "weight": 0.75, "price": 4.83, "qty": 1500, "market_value": 7245.0, "hold_pnl": -1538.33, "hold_pnl_rate": -17.51, "days": 258}, {"code": "02196", "name": "复星医药", "weight": 0.72, "price": 16.2, "qty": 500, "market_value": 6998.4, "hold_pnl": 5561.95, "hold_pnl_rate": 387.19, "days": 259}, {"code": "159928", "name": "消费ETF", "weight": 0.7100000000000001, "price": 0.663, "qty": 10400, "market_value": 6895.2, "hold_pnl": -1037.32, "hold_pnl_rate": -13.07, "days": 278}, {"code": "513500", "name": "标普500", "weight": 0.65, "price": 2.52, "qty": 2500, "market_value": 6300.0, "hold_pnl": 1241.7, "hold_pnl_rate": 24.55, "days": 280}, {"code": "159892", "name": "恒生生物", "weight": 0.44999999999999996, "price": 0.726, "qty": 6000, "market_value": 4356.0, "hold_pnl": 1026.55, "hold_pnl_rate": 30.830000000000002, "days": 267}, {"code": "600863", "name": "华能蒙电", "weight": 0.36, "price": 4.96, "qty": 700, "market_value": 3472.0, "hold_pnl": 17662.63, "hold_pnl_rate": 0, "days": 608}, {"code": "601155", "name": "新城控股", "weight": 0.11, "price": 11.07, "qty": 100, "market_value": 1107.0, "hold_pnl": 160.89, "hold_pnl_rate": 17.01, "days": 501}, {"code": "600305", "name": "恒顺醋业", "weight": 0.06999999999999999, "price": 6.65, "qty": 100, "market_value": 665.0, "hold_pnl": -51.11, "hold_pnl_rate": -7.140000000000001, "days": 41}], "closed_analysis": {"A股": [{"code": "2027", "name": "分众传媒", "pnl": 0}, {"code": "159920", "name": "恒生ETF", "pnl": 0}, {"code": "159938", "name": "医药", "pnl": 0}, {"code": "603259", "name": "药明康德", "pnl": 0}, {"code": "2027", "name": "分众传媒", "pnl": 0}, {"code": "159920", "name": "恒生ETF", "pnl": 0}, {"code": "159938", "name": "医药", "pnl": 0}, {"code": "161028", "name": "新能源车", "pnl": 0}, {"code": "510310", "name": "HS300ETF", "pnl": 0}, {"code": "512170", "name": "医疗ETF", "pnl": 0}, {"code": "513060", "name": "恒生医疗", "pnl": 0}, {"code": "588000", "name": "科创50", "pnl": 0}, {"code": "601899", "name": "紫金矿业", "pnl": 0}, {"code": "933", "name": "神火股份", "pnl": 0}, {"code": "601225", "name": "陕西煤业", "pnl": 0}, {"code": "792", "name": "盐湖股份", "pnl": 0}, {"code": "1093", "name": "石药集团", "pnl": 0}, {"code": "2196", "name": "复星医药", "pnl": 0}, {"code": "3690", "name": "美团-W", "pnl": 0}, {"code": "9988", "name": "阿里巴巴", "pnl": 0}, {"code": "501300", "name": "美元债", "pnl": 0}, {"code": "2466", "name": "天齐锂业", "pnl": 0}, {"code": "601168", "name": "西部矿业", "pnl": 0}, {"code": "600795", "name": "国电电力", "pnl": 0}, {"code": "600938", "name": "中国海油", "pnl": 0}, {"code": "603167", "name": "渤海轮渡", "pnl": 0}, {"code": "159915", "name": "创业板", "pnl": 0}, {"code": "159939", "name": "信息技术", "pnl": 0}, {"code": "159940", "name": "金融", "pnl": 0}, {"code": "502010", "name": "证券LOF", "pnl": 0}, {"code": "510300", "name": "300ETF", "pnl": 0}, {"code": "512580", "name": "环保ETF", "pnl": 0}, {"code": "512980", "name": "传媒ETF", "pnl": 0}, {"code": "513060", "name": "恒生医疗", "pnl": 0}, {"code": "513970", "name": "恒生消费", "pnl": 0}, {"code": "600989", "name": "宝丰能源", "pnl": 0}, {"code": "118059", "name": "颀中转债", "pnl": 0}, {"code": "2228", "name": "晶泰控股", "pnl": 0}, {"code": "118065", "name": "艾为转债", "pnl": 0}, {"code": "601088", "name": "中国神华", "pnl": 0}, {"code": "601898", "name": "中煤能源", "pnl": 0}, {"code": "113700", "name": "海天转债", "pnl": 0}, {"code": "933", "name": "神火股份", "pnl": 0}, {"code": "2319", "name": "蒙牛乳业", "pnl": 0}, {"code": "600011", "name": "华能国际", "pnl": 0}, {"code": "600886", "name": "国投电力", "pnl": 0}, {"code": "600985", "name": "淮北矿业", "pnl": 0}, {"code": "510880", "name": "红利ETF", "pnl": 0}, {"code": "651", "name": "格力电器", "pnl": 0}, {"code": "123268", "name": "本川转债", "pnl": 0}, {"code": "601225", "name": "陕西煤业", "pnl": 0}, {"code": "111025", "name": "N圣泉转", "pnl": 0}], "港股": []}, "cum_pnl_seq": [{"date": "2024-01-29", "cum_pnl": 0.0}, {"date": "2024-10-08", "cum_pnl": 0.0}, {"date": "2025-04-09", "cum_pnl": 0.0}, {"date": "2025-04-14", "cum_pnl": 0.0}, {"date": "2025-05-14", "cum_pnl": 0.0}, {"date": "2025-05-21", "cum_pnl": 0.0}, {"date": "2025-07-03", "cum_pnl": 0.0}, {"date": "2025-07-21", "cum_pnl": 0.0}, {"date": "2025-07-25", "cum_pnl": 0.0}, {"date": "2025-08-11", "cum_pnl": 0.0}, {"date": "2025-09-04", "cum_pnl": 0.0}, {"date": "2025-11-03", "cum_pnl": 0.0}, {"date": "2025-11-05", "cum_pnl": 0.0}, {"date": "2025-11-06", "cum_pnl": 0.0}, {"date": "2025-11-24", "cum_pnl": 0.0}, {"date": "2026-01-09", "cum_pnl": 0.0}, {"date": "2026-02-27", "cum_pnl": 0.0}, {"date": "2026-03-09", "cum_pnl": 0.0}, {"date": "2026-03-12", "cum_pnl": 0.0}, {"date": "2026-03-13", "cum_pnl": 0.0}, {"date": "2026-03-18", "cum_pnl": 0.0}, {"date": "2026-04-29", "cum_pnl": 0.0}, {"date": "2026-05-08", "cum_pnl": 0.0}, {"date": "2026-05-15", "cum_pnl": 0.0}, {"date": "2026-07-21", "cum_pnl": 0.0}], "yearly_data": [{"year": "2024", "pnl": 0.0}, {"year": "2025", "pnl": 0.0}, {"year": "2026", "pnl": 0.0}], "return_series": [{"date": "2026-07-24", "account": 0.0, "shanghai": 0.0, "csi300": 0.0, "total_value": 969641.53}, {"date": "2026-07-27", "account": -0.03, "shanghai": 1.15, "csi300": 1.15, "total_value": 969311.62}]};
+
+let holdings, sortCol, sortDir;
+
+// ── 排序（不切换方向，参数控制）──
+function doSort(col, dir) {
+  sortCol = col; sortDir = dir || -1;
+  holdings.sort((a,b) => {
+    let va = a[col]||0, vb = b[col]||0;
+    if (typeof va === 'string') return sortDir * va.localeCompare(vb);
+    return sortDir * (va - vb);
+  });
+  renderTable();
+  updateArrows();
+}
+
+// ── 点击表头切换排序 ──
+function toggleSort(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = -1; }
+  doSort(col, sortDir);
+}
+
+// ── 筛选 ──
+function applyFilters() {
+  const el = id => document.getElementById(id);
+  const get = id => { const e=el(id); return e ? e.value.trim() : ''; };
+  const f_code = get('f-code').toLowerCase();
+  const f_name = get('f-name').toLowerCase();
+  const f_weight = parseFloat(get('f-weight'))||-1;
+  const f_price = parseFloat(get('f-price'))||-1;
+  const f_qty = parseFloat(get('f-qty'))||-1;
+  const f_mv = parseFloat(get('f-mv'))||-1;
+  const f_pnl = get('f-pnl'); const f_pnl_v = parseFloat(f_pnl)||-999999;
+  const f_rate = get('f-pnlrate'); const f_rate_v = parseFloat(f_rate)||-999;
+  const f_days = parseFloat(get('f-days'))||-1;
+  return D.holdings.filter(r => {
+    if (f_code && !r.code.toLowerCase().includes(f_code)) return false;
+    if (f_name && !r.name.toLowerCase().includes(f_name)) return false;
+    if (f_weight>=0 && r.weight<f_weight) return false;
+    if (f_price>0 && r.price<f_price) return false;
+    if (f_qty>0 && r.qty<f_qty) return false;
+    if (f_mv>0 && r.market_value<f_mv) return false;
+    if (f_pnl && r.hold_pnl<f_pnl_v) return false;
+    if (f_rate && r.hold_pnl_rate<f_rate_v) return false;
+    if (f_days>0 && r.days<f_days) return false;
+    return true;
+  });
+}
+
+function clearFilters() {
+  document.querySelectorAll('.filter-bar input').forEach(el => { el.value = ''; el.classList.remove('filter-active'); });
+  holdings = applyFilters();
+  if (sortCol) doSort(sortCol, sortDir);
+  else renderTable();
+}
+
+function resetDefault() {
+  document.querySelectorAll('.filter-bar input').forEach(el => { el.value = ''; el.classList.remove('filter-active'); });
+  holdings = D.holdings;
+  doSort('weight', -1);
+}
+
+// ── 渲染 ──
+function renderTable() {
+  const tb = document.getElementById('holdings-body');
+  if (!holdings || holdings.length===0) { tb.innerHTML='<tr><td colspan="9" class="no-result">无匹配结果</td></tr>'; return; }
+  tb.innerHTML = holdings.map(r => {
+    const c = v => v>=0?'positive':'negative';
+    return '<tr><td>'+r.code+'</td><td>'+r.name+'</td><td>'+r.weight.toFixed(1)+'%</td><td>'+r.price.toFixed(2)+'</td><td>'+r.qty.toLocaleString()+'</td><td>'+r.market_value.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0})+'</td><td class="'+c(r.hold_pnl)+'">'+r.hold_pnl.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0})+'</td><td class="'+c(r.hold_pnl_rate)+'">'+r.hold_pnl_rate.toFixed(2)+'%</td><td>'+r.days+'</td></tr>';
+  }).join('');
+}
+
+function updateArrows() {
+  document.querySelectorAll('th[data-col]').forEach(th => {
+    const a = th.querySelector('.sort-arrow');
+    if (!a) return;
+    const col = th.dataset.col;
+    a.classList.toggle('active', col===sortCol);
+    a.textContent = col===sortCol ? (sortDir===1?' ▲':' ▼') : ' ⇅';
+  });
+}
+
+// ── 收益图（双Y轴：左=总市值柱状图，右=收益率折线）──
+function renderReturnChart() {
+  if (!D.return_series || D.return_series.length < 2) return;
+  const rs = D.return_series;
+  const dates = rs.map(r => r.date.slice(5));
+  const chart = echarts.init(document.getElementById('return-chart'));
+  // 动态计算 Y 轴范围
+  const tvVals = rs.map(r => r.total_value).filter(v => v != null);
+  const retVals = [].concat(rs.map(r => r.account), rs.map(r => r.shanghai), rs.map(r => r.csi300)).filter(v => v != null);
+  const tvMin = Math.min(...tvVals), tvMax = Math.max(...tvVals);
+  const retMin = Math.min(...retVals), retMax = Math.max(...retVals);
+  const tvPad = Math.max((tvMax - tvMin) * 1.5, 500);
+  const retPad = Math.max((retMax - retMin) * 0.6, 0.5);
+  chart.setOption({
+    tooltip: {
+      trigger: 'axis',
+      formatter: function(params) {
+        let s = '<b>' + params[0].axisValue + '</b><br/>';
+        params.forEach(p => {
+          if (p.seriesName === '总市值') {
+            s += p.marker + ' ' + p.seriesName + ': ' + (p.value/10000).toFixed(2) + '万<br/>';
+          } else {
+            const v = p.value !== null ? p.value.toFixed(2) + '%' : '—';
+            s += p.marker + ' ' + p.seriesName + ': ' + v + '<br/>';
+          }
+        });
+        return s;
+      }
+    },
+    legend: { data: ['总市值','账户','上证指数','沪深300'], top: 0, textStyle: { color: '#c9d1d9' } },
+    grid: { left: '10%', right: '10%', top: '15%', bottom: '5%' },
+    xAxis: { type: 'category', data: dates, axisLabel: { color: '#6e7681', fontSize: 10 } },
+    yAxis: [
+      {
+        type: 'value', splitNumber: 5,
+        min: tvMin - tvPad, max: tvMax + tvPad,
+        name: '总市值(万)',
+        nameTextStyle: { color: '#6e7681', fontSize: 10 },
+        axisLabel: { formatter: v => (v/10000).toFixed(0), color: '#6e7681', fontSize: 10 },
+        splitLine: { lineStyle: { color: '#21262d' } }
+      },
+      {
+        type: 'value', splitNumber: 5,
+        min: retMin - retPad, max: retMax + retPad,
+        name: '收益率(%)',
+        nameTextStyle: { color: '#6e7681', fontSize: 10 },
+        axisLabel: { formatter: v => v.toFixed(2)+'%', color: '#6e7681', fontSize: 10 },
+        splitLine: { show: false }
+      }
+    ],
+    series: [
+      {
+        name: '总市值', type: 'bar', yAxisIndex: 0,
+        data: rs.map(r => r.total_value),
+        itemStyle: { color: 'rgba(88,166,255,0.35)', borderColor: '#58a6ff', borderWidth: 1 },
+        barWidth: '40%'
+      },
+      {
+        name: '账户', type: 'line', yAxisIndex: 1,
+        data: rs.map(r => r.account),
+        lineStyle: { color: '#f85149', width: 2 },
+        itemStyle: { color: '#f85149' },
+        symbol: 'circle', symbolSize: 8, connectNulls: false
+      },
+      {
+        name: '上证指数', type: 'line', yAxisIndex: 1,
+        data: rs.map(r => r.shanghai),
+        lineStyle: { color: '#58a6ff', width: 1.5 },
+        itemStyle: { color: '#58a6ff' },
+        symbol: 'diamond', symbolSize: 6
+      },
+      {
+        name: '沪深300', type: 'line', yAxisIndex: 1,
+        data: rs.map(r => r.csi300),
+        lineStyle: { color: '#d2991d', width: 1.5 },
+        itemStyle: { color: '#d2991d' },
+        symbol: 'diamond', symbolSize: 6
+      }
+    ]
+  });
+  window.addEventListener('resize', () => chart.resize());
+}
+
+// ── 初始化 ──
+(function init() {
+  // 箭头 + 点击
+  document.querySelectorAll('th[data-col]').forEach(th => {
+    th.innerHTML += '<span class="sort-arrow"> ⇅</span>';
+    th.addEventListener('click', () => toggleSort(th.dataset.col));
+  });
+  // 筛选输入
+  document.querySelectorAll('.filter-bar input').forEach(inp => {
+    const handler = () => {
+      try {
+        inp.classList.toggle('filter-active', inp.value.trim()!=='');
+        holdings = applyFilters();
+        if (sortCol) doSort(sortCol, sortDir); else renderTable();
+      } catch(e) { alert('筛选出错: '+e.message); }
+    };
+    inp.addEventListener('input', handler);
+    inp.addEventListener('keyup', handler);
+  });
+  // 默认渲染
+  holdings = D.holdings;
+  doSort('weight', -1);
+  renderReturnChart();
+})();
+</script>
+</body>
+</html>
