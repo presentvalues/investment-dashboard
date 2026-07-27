@@ -163,8 +163,9 @@ tr:hover{{background:#1c2129}}
 
 <!-- ── 历史年度盈亏 ── -->
 <div class="section">
-<div class="section-title">📈 历史年度盈亏（2021 至今）</div>
-<div id="yearly-chart" style="width:100%;height:360px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
+<div class="section-title">📈 历史年度盈亏（2021 年至今）</div>
+<div id="yearly-chart" style="width:100%;height:320px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
+<div id="yearly-table" style="margin-top:10px;overflow-x:auto"></div>
 </div>
 
 <div class="footer">辰影的自由之路 ｜ 数据基于银河证券导出 ｜ 自动生成于 {generate_time}</div>
@@ -364,6 +365,8 @@ function renderReturnChart() {{
   // 默认渲染
   holdings = D.holdings;
   doSort('weight', -1);
+  // 年度数据表不等图表，直接渲染
+  if (D.yearly_data) renderYearlyTable();
   // 图表：在线用 ECharts，离线超时 3 秒后切换纯 HTML 数据表
   var chartRendered = false;
   function tryRenderChart() {{
@@ -528,27 +531,19 @@ function renderClosedFallback(containerId, data) {{
   el.style.padding = '8px';
 }}
 
-// ── 历史年度盈亏图（竖向柱状+双折线）──
+// ── 历史年度盈亏图（竖向柱状：当年盈亏 + 累计盈亏折线，单轴）──
 function renderYearlyChart() {{
   var yd = D.yearly_data;
   if (!yd || !yd.years || yd.years.length === 0) return;
   var years = yd.years.map(function(y) {{ return y.year.toString(); }});
   var pnlData = yd.years.map(function(y) {{ return (y.pnl / 10000); }});
-  var twrData = yd.twr.map(function(t) {{ return t.value; }});
-  var mwrData = yd.mwr.map(function(m) {{ return m.value; }});
+  var cumData = yd.cum_pnl.map(function(c) {{ return c.value; }});
 
-  // 动态计算左轴（盈亏）范围，参考收益率板块规则
   var pnlAbs = Math.max(Math.abs(Math.min.apply(null, pnlData)), Math.abs(Math.max.apply(null, pnlData)), 0.1);
-  var leftTop = Math.ceil(pnlAbs / 5) * 5;
-  leftTop = Math.max(leftTop, 5);
-  var leftStep = leftTop / 5;
-
-  // 右轴（收益率）范围
-  var retAll = twrData.concat(mwrData);
-  var retMin = Math.min.apply(null, retAll), retMax = Math.max.apply(null, retAll);
-  var rightTop = Math.ceil(Math.max(Math.abs(retMin), Math.abs(retMax), 0.01) / 5) * 5;
-  rightTop = Math.max(rightTop, 5);
-  var rightStep = rightTop / 5;
+  var cumAbs = Math.max(Math.abs(Math.min.apply(null, cumData)), Math.abs(Math.max.apply(null, cumData)), 0.1);
+  var axisMax = Math.ceil(Math.max(pnlAbs, cumAbs) / 10) * 10;
+  axisMax = Math.max(axisMax, 10);
+  var axisStep = axisMax / 5;
 
   var el = document.getElementById('yearly-chart');
   var chart = echarts.init(el);
@@ -558,60 +553,81 @@ function renderYearlyChart() {{
       formatter: function(params) {{
         var s = '<b>' + params[0].axisValue + '</b><br/>';
         params.forEach(function(p) {{
-          if (p.seriesName === '当年盈亏') {{
+          if (p.seriesName === '累计盈亏') {{
             s += p.marker + ' ' + p.seriesName + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(2) + '万<br/>';
           }} else {{
-            s += p.marker + ' ' + p.seriesName + ': ' + p.value.toFixed(2) + '%<br/>';
+            s += p.marker + ' ' + p.seriesName + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(2) + '万';
           }}
         }});
         return s;
       }}
     }},
-    legend: {{ data: ['当年盈亏','资金加权(MWR)','时间加权(TWR)'], top: 0, textStyle: {{ color: '#c9d1d9' }} }},
-    grid: {{ left: '10%', right: '10%', top: '15%', bottom: '5%' }},
-    xAxis: {{ type: 'category', data: years, axisLabel: {{ color: '#6e7681', fontSize: 10 }} }},
-    yAxis: [
-      {{
-        type: 'value', min: -(leftTop), max: leftTop, interval: leftStep,
-        name: '盈亏(万)', nameTextStyle: {{ color: '#6e7681', fontSize: 10 }},
-        axisLabel: {{ formatter: function(v) {{ return v.toFixed(0); }}, color: '#6e7681', fontSize: 10 }},
-        splitLine: {{ lineStyle: {{ color: '#21262d' }} }}
-      }},
-      {{
-        type: 'value', min: -(rightTop), max: rightTop, interval: rightStep,
-        name: '收益率(%)', nameTextStyle: {{ color: '#6e7681', fontSize: 10 }},
-        axisLabel: {{ formatter: function(v) {{ return v.toFixed(0) + '%'; }}, color: '#6e7681', fontSize: 10 }},
-        splitLine: {{ show: false }}
-      }}
-    ],
+    legend: {{ data: ['当年盈亏','累计盈亏'], top: 0, textStyle: {{ color: '#c9d1d9' }} }},
+    grid: {{ left: '10%', right: '6%', top: '15%', bottom: '10%' }},
+    xAxis: {{ type: 'category', data: years, boundaryGap: false, axisLabel: {{ color: '#6e7681', fontSize: 10, margin: 8 }} }},
+    yAxis: {{
+      type: 'value', min: -(axisMax), max: axisMax, interval: axisStep,
+      name: '万元', nameTextStyle: {{ color: '#6e7681', fontSize: 10 }},
+      axisLabel: {{ formatter: function(v) {{ return v.toFixed(0); }}, color: '#6e7681', fontSize: 10 }},
+      splitLine: {{ lineStyle: {{ color: '#21262d' }} }}
+    }},
     series: [
       {{
-        name: '当年盈亏', type: 'bar', yAxisIndex: 0,
+        name: '当年盈亏', type: 'bar',
         data: pnlData.map(function(v) {{
           return {{ value: v, itemStyle: {{ color: v >= 0 ? '#f85149' : '#3fb950' }} }};
         }}),
-        barWidth: '40%'
+        barWidth: '45%'
       }},
       {{
-        name: '资金加权(MWR)', type: 'line', yAxisIndex: 1,
-        data: mwrData,
-        lineStyle: {{ color: '#d2991d', width: 2 }},
-        itemStyle: {{ color: '#d2991d' }},
-        symbol: 'circle', symbolSize: 7
-      }},
-      {{
-        name: '时间加权(TWR)', type: 'line', yAxisIndex: 1,
-        data: twrData,
-        lineStyle: {{ color: '#58a6ff', width: 2 }},
+        name: '累计盈亏', type: 'line',
+        data: cumData,
+        lineStyle: {{ color: '#58a6ff', width: 3 }},
         itemStyle: {{ color: '#58a6ff' }},
-        symbol: 'diamond', symbolSize: 7
+        symbol: 'circle', symbolSize: 8
       }}
     ]
   }});
   window.addEventListener('resize', function() {{ chart.resize(); }});
 }}
 
-// 年度盈亏离线降级
+// 年度数据表（始终渲染，不等 ECharts）
+function renderYearlyTable() {{
+  var yd = D.yearly_data;
+  if (!yd || !yd.years) return;
+  var el = document.getElementById('yearly-table');
+  var cols = [
+    {{key:'year', title:'年份', fmt:function(v){{return v;}} }},
+    {{key:'pnl', title:'当年盈亏(万)', fmt:function(v){{return (v>=0?'+':'')+v.toFixed(1);}}, cls:function(v){{return v>=0?'positive':'negative';}} }},
+    {{key:'twr', title:'时间加权收益', fmt:function(v){{return v.toFixed(2)+'%';}}, cls:function(v){{return v>=0?'positive':'negative';}} }},
+    {{key:'mwr', title:'资金加权收益', fmt:function(v){{return v.toFixed(2)+'%';}}, cls:function(v){{return v>=0?'positive':'negative';}} }},
+    {{key:'dividend', title:'中证红利全收益', fmt:function(v){{return v.toFixed(2)+'%';}}, cls:function(v){{return v>=0?'positive':'negative';}} }},
+    {{key:'csi300', title:'沪深300全收益', fmt:function(v){{return v.toFixed(2)+'%';}}, cls:function(v){{return v>=0?'positive':'negative';}} }},
+    {{key:'chinext', title:'创业板全收益', fmt:function(v){{return v.toFixed(2)+'%';}}, cls:function(v){{return v>=0?'positive':'negative';}} }},
+    {{key:'hsi', title:'恒生指数', fmt:function(v){{return v.toFixed(2)+'%';}}, cls:function(v){{return v>=0?'positive':'negative';}} }},
+    {{key:'sp500', title:'标普500', fmt:function(v){{return v.toFixed(2)+'%';}}, cls:function(v){{return v>=0?'positive':'negative';}} }}
+  ];
+  var html = '<div style="background:#161b22;border:1px solid #30363d;border-radius:8px;overflow-x:auto">';
+  html += '<table style="width:100%;border-collapse:collapse;font-size:12px;color:#c9d1d9">';
+  html += '<thead><tr style="background:#21262d">';
+  cols.forEach(function(c) {{
+    html += '<th style="padding:6px 6px;border-bottom:1px solid #30363d;white-space:nowrap;text-align:center">' + c.title + '</th>';
+  }});
+  html += '</tr></thead><tbody>';
+  yd.years.forEach(function(y) {{
+    html += '<tr>';
+    cols.forEach(function(c) {{
+      var v = c.key==='year' ? y.year : (c.key==='pnl' ? y.pnl/10000 : y[c.key]);
+      var cls = c.cls ? c.cls(v) : '';
+      html += '<td style="padding:5px 6px;border-bottom:1px solid #21262d;text-align:center" class="' + cls + '">' + c.fmt(v) + '</td>';
+    }});
+    html += '</tr>';
+  }});
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}}
+
+// 年度盈亏离线降级（图表区用简洁文字替代）
 function renderYearlyFallback() {{
   var yd = D.yearly_data;
   if (!yd || !yd.years) return;
