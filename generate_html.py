@@ -264,7 +264,9 @@ function renderReturnChart() {{
   const retVals = [].concat(rs.map(r => r.account), rs.map(r => r.shanghai), rs.map(r => r.csi300), rs.map(r => r.chinext)).filter(v => v != null);
   const tvMaxW = Math.max(...tvVals) / 10000;                     // 万为单位
   const retMin = Math.min(...retVals), retMax = Math.max(...retVals);
-  const leftTop = Math.ceil(tvMaxW / 5) * 5;                      // 上限（万），能被5整除
+  // 左轴：50万为步长取整，保证柱子不超过上限的2/3
+  const leftTopRaw = Math.ceil(tvMaxW / 50) * 50;
+  const leftTop = (tvMaxW / leftTopRaw > 2/3) ? leftTopRaw + 50 : leftTopRaw;
   const leftStep = leftTop / 5;                                    // 每档（万）
   const rightTop = Math.ceil(retMax / 5) * 5;                     // 上限（%），5%步长
   const rightBottom = Math.floor(retMin / 5) * 5;                 // 下限（%），5%步长
