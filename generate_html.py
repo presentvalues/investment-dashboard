@@ -263,11 +263,11 @@ function renderReturnChart() {{
   const tvVals = rs.map(r => r.total_value).filter(v => v != null);
   const retVals = [].concat(rs.map(r => r.account), rs.map(r => r.shanghai), rs.map(r => r.csi300), rs.map(r => r.chinext)).filter(v => v != null);
   const tvMaxW = Math.max(...tvVals) / 10000;                     // 万为单位
-  const retMax = Math.max(...retVals);
+  const retMin = Math.min(...retVals), retMax = Math.max(...retVals);
   const leftTop = Math.ceil(tvMaxW / 5) * 5;                      // 上限（万），能被5整除
   const leftStep = leftTop / 5;                                    // 每档（万）
-  const rightTop = Math.ceil(retMax / 5) * 5;                     // 上限（%），能被5整除
-  const rightStep = rightTop / 5;                                  // 每档（%）
+  const rightTop = Math.ceil(retMax / 5) * 5;                     // 上限（%），5%步长
+  const rightBottom = Math.floor(retMin / 5) * 5;                 // 下限（%），5%步长
   chart.setOption({{
     tooltip: {{
       trigger: 'axis',
@@ -296,7 +296,7 @@ function renderReturnChart() {{
         splitLine: {{ lineStyle: {{ color: '#21262d' }} }}
       }},
       {{
-        type: 'value', min: -rightStep, max: rightTop, interval: rightStep,
+        type: 'value', min: rightBottom, max: rightTop, interval: 5,
         name: '收益率(%)',
         nameTextStyle: {{ color: '#6e7681', fontSize: 10 }},
         axisLabel: {{ formatter: v => v.toFixed(0)+'%', color: '#6e7681', fontSize: 10 }},
@@ -315,7 +315,13 @@ function renderReturnChart() {{
         data: rs.map(r => r.account),
         lineStyle: {{ color: '#f85149', width: 2 }},
         itemStyle: {{ color: '#f85149' }},
-        symbol: 'circle', symbolSize: 8, connectNulls: false
+        symbol: 'circle', symbolSize: 8, connectNulls: false,
+        markLine: {{
+          silent: true, symbol: 'none',
+          lineStyle: {{ color: '#6e7681', type: 'dashed', width: 1 }},
+          label: {{ show: false }},
+          data: [{{ yAxis: 0 }}]
+        }}
       }},
       {{
         name: '上证指数', type: 'line', yAxisIndex: 1,

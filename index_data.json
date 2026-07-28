@@ -2,7 +2,26 @@
   "baseline_date": "2026-07-24",
   "baseline_total_value": 969641.53,
   "series": [
-    {"date": "2026-07-24", "shanghai": 3814.20, "csi300": 4649.19, "chinext": 3480.87, "total_value": 969641.53},
-    {"date": "2026-07-27", "shanghai": 3858.25, "csi300": 4702.43, "chinext": 3590.79, "total_value": 969311.62}
+    {
+      "date": "2026-07-24",
+      "shanghai": 3814.2,
+      "csi300": 4649.19,
+      "chinext": 3480.87,
+      "total_value": 969641.53
+    },
+    {
+      "date": "2026-07-27",
+      "shanghai": 3858.25,
+      "csi300": 4702.43,
+      "chinext": 3590.79,
+      "total_value": 969311.62
+    },
+    {
+      "date": "2026-07-28",
+      "shanghai": 3813.31,
+      "csi300": 4569.52,
+      "chinext": 3327.03,
+      "total_value": 973488.39
+    }
   ]
 }
