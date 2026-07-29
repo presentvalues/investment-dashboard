@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# build.py — 辰影的自由之路持仓每日盈亏看板 构建脚本
+# build.py — 银河证券股票持仓每日盈亏看板 构建脚本
 # 用法: python3 build.py
 
 import json, os, sys, glob, re
@@ -309,7 +309,7 @@ if os.path.exists(YEARLY_FILE):
     print(f"年度盈亏数据: {len(yearly_data.get('years', []))} 年")
 
 output_data = {
-    "title": "辰影的自由之路持仓每日盈亏看板",
+    "title": "银河证券股票持仓每日盈亏看板",
     "generate_time": (datetime.now() + __import__('datetime').timedelta(hours=8)).strftime("%Y-%m-%d %H:%M:%S"),
     "latest_date": latest_date,
     "summary": {

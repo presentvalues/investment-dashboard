@@ -168,7 +168,7 @@ tr:hover{{background:#1c2129}}
 <div id="yearly-table" style="margin-top:10px;overflow-x:auto"></div>
 </div>
 
-<div class="footer">辰影的自由之路 ｜ 数据基于银河证券导出 ｜ 自动生成于 {generate_time}</div>
+<div class="footer">PRESENTVALUES ｜ 辰影的自由之路</div>
 
 <script>
 const D = {data_json};
