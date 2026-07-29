@@ -680,7 +680,9 @@ def cls(v):
 
 # 日期格式化
 ld = d["latest_date"]
-date_cn = f"{ld[:4]}年{int(ld[5:7])}月{int(ld[8:10])}日"
+weekdays = ["星期一","星期二","星期三","星期四","星期五","星期六","星期日"]
+dt = datetime.strptime(ld, "%Y-%m-%d")
+date_cn = f"{ld[:4]}年{int(ld[5:7])}月{int(ld[8:10])}日（{weekdays[dt.weekday()]}）"
 
 # 基准日期
 bd = d.get("return_series") and d["return_series"][0]["date"] if d.get("return_series") else d["latest_date"]
