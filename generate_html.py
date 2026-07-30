@@ -8,7 +8,8 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(BASE_DIR, "output", "data.json")) as f:
     DATA = json.load(f)
 
-ts = (datetime.now() + __import__('datetime').timedelta(hours=8)).strftime("%H%M%S")  # 北京时间
+bjt = datetime.now() + __import__('datetime').timedelta(hours=8)
+ts = bjt.strftime("%Y%m%d-%H%M%S")
 
 HTML = '''<!DOCTYPE html>
 <html lang="zh-CN">
@@ -103,7 +104,8 @@ tr:hover{{background:#1c2129}}
 
 <!-- ── 当前持仓表格 ── -->
 <div class="section">
-<div class="section-title">📋 当前持仓 <span style="font-size:11px;color:#6e7681;font-weight:400;margin-left:8px">点击表头排序 | 输入关键词筛选</span></div>
+<div class="section-title">📋 当前持仓</div>
+<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:4px;padding-left:11px;text-align:left">点击表头排序 | 输入关键词筛选</p>
 <div class="filter-bar">
   <button onclick="resetDefault()" style="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;white-space:nowrap">↻ 默认</button>
   <input type="text" id="f-code" placeholder="代码" style="width:70px">
@@ -120,7 +122,8 @@ tr:hover{{background:#1c2129}}
 <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;overflow-x:auto">
 <table id="holdings-table">
 <thead><tr>
-<th data-col="code">代码</th>
+<th style="width:36px;cursor:default;color:#6e7681">序号</th>
+<th data-col="code" style="width:66px">代码</th>
 <th data-col="name">名称</th>
 <th data-col="weight">仓位占比</th>
 <th data-col="price">最新价</th>
@@ -137,16 +140,17 @@ tr:hover{{background:#1c2129}}
 
 <!-- ── 账户收益率 ── -->
 <div class="section">
-<div class="section-title">📈 账户收益率 <span style="font-size:11px;color:#6e7681;font-weight:400;margin-left:8px">基准 {baseline_date} = 0%</span></div>
+<div class="section-title">📈 账户收益率</div>
+<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:4px;padding-left:11px;text-align:left">账户收益率：{account_return}% ｜ 基准 {baseline_date} = 0%</p>
 <div id="return-chart" style="width:100%;height:360px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
 </div>
 
 <!-- ── 已清仓股票累计收益/亏损 ── -->
 <div class="section">
-<div class="section-title">📋 已清仓股票累计收益/亏损</div>
-<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:10px;text-align:left">
-已清仓 {closed_count} 只；累计已实现净额：<span style="color:{total_cls}">{total_pnl} 万元</span>，
-其中 A 股净额：<span style="color:{a_cls}">{a_pnl} 万元</span>，
+<div class="section-title">📋 已清仓股票累计收益</div>
+<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:10px;text-align:left;padding-left:11px">
+已清仓 {closed_count} 只 ｜ 累计已实现净额：<span style="color:{total_cls}">{total_pnl} 万元</span>，
+｜ 其中 A 股净额：<span style="color:{a_cls}">{a_pnl} 万元</span>，
 港股净额：<span style="color:{h_cls}">{h_pnl} 万元</span>
 </p>
 <div style="display:flex;gap:12px">
@@ -163,7 +167,8 @@ tr:hover{{background:#1c2129}}
 
 <!-- ── 历史年度盈亏 ── -->
 <div class="section">
-<div class="section-title">📈 历史年度盈亏（2021 年至今）</div>
+<div class="section-title">📈 年度历史盈亏</div>
+<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:6px;padding-left:11px;text-align:left">年度历史总盈亏：{cum_pnl_total} 万元 ｜ 2021年5月至今</p>
 <div id="yearly-chart" style="width:100%;height:320px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
 <div id="yearly-table" style="margin-top:10px;overflow-x:auto"></div>
 </div>
@@ -237,9 +242,9 @@ function resetDefault() {{
 function renderTable() {{
   const tb = document.getElementById('holdings-body');
   if (!holdings || holdings.length===0) {{ tb.innerHTML='<tr><td colspan="9" class="no-result">无匹配结果</td></tr>'; return; }}
-  tb.innerHTML = holdings.map(r => {{
+  tb.innerHTML = holdings.map((r,i) => {{
     const c = v => v>=0?'positive':'negative';
-    return '<tr><td>'+r.code+'</td><td>'+r.name+'</td><td>'+r.weight.toFixed(1)+'%</td><td>'+r.price.toFixed(2)+'</td><td>'+r.qty.toLocaleString()+'</td><td>'+r.market_value.toLocaleString(undefined,{{minimumFractionDigits:0,maximumFractionDigits:0}})+'</td><td class="'+c(r.hold_pnl)+'">'+r.hold_pnl.toLocaleString(undefined,{{minimumFractionDigits:0,maximumFractionDigits:0}})+'</td><td class="'+c(r.hold_pnl_rate)+'">'+r.hold_pnl_rate.toFixed(2)+'%</td><td>'+r.days+'</td></tr>';
+    return '<tr><td style=\"color:#6e7681\">'+(i+1)+'</td><td>'+r.code+'</td><td>'+r.name+'</td><td>'+r.weight.toFixed(1)+'%</td><td>'+r.price.toFixed(2)+'</td><td>'+r.qty.toLocaleString()+'</td><td>'+r.market_value.toLocaleString(undefined,{{minimumFractionDigits:0,maximumFractionDigits:0}})+'</td><td class="'+c(r.hold_pnl)+'">'+r.hold_pnl.toLocaleString(undefined,{{minimumFractionDigits:0,maximumFractionDigits:0}})+'</td><td class="'+c(r.hold_pnl_rate)+'">'+r.hold_pnl_rate.toFixed(2)+'%</td><td>'+r.days+'</td></tr>';
   }}).join('');
 }}
 
@@ -631,6 +636,31 @@ function renderYearlyTable() {{
     }});
     html += '</tr>';
   }});
+    // 年化行
+  var n = yd.years.length;
+  var sum = function(arr, key) {{
+    var total = 0;
+    arr.forEach(function(y) {{ total += y[key]; }});
+    return total;
+  }};
+  var annualize = function(series, key) {{
+    // 几何平均年化: (∏(1+ri))^(1/n) - 1
+    var product = 1;
+    series.forEach(function(v) {{
+      if (key) v = v[key];  // yearly_data
+      product *= (1 + v / 100);
+    }});
+    return (Math.pow(product, 1/n) - 1) * 100;
+  }};
+  var pnlAvg = sum(yd.years, 'pnl') / 10000 / n;
+  html += '<tr style="background:#21262d;font-weight:600">';
+  html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="positive">年化</td>';
+  html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="'+(pnlAvg>=0?'positive':'negative')+'">'+(pnlAvg>=0?'+':'')+pnlAvg.toFixed(2)+'</td>';
+  ['twr','mwr','dividend','csi300','chinext','hsi','sp500'].forEach(function(k) {{
+    var ann = annualize(yd.years, k);
+    html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="'+(ann>=0?'positive':'negative')+'">'+ann.toFixed(2)+'%</td>';
+  }});
+  html += '</tr>';
   html += '</tbody></table></div>';
   el.innerHTML = html;
 }}
@@ -707,6 +737,13 @@ else:
     total_cls = ""; a_cls = ""; h_cls = ""
     chart_height = 200
 
+# 年度历史总盈亏
+yd_for_calc = d.get("yearly_data", {})
+cum_pnl_total = sum(y["pnl"] for y in yd_for_calc.get("years", [])) / 10000 if yd_for_calc else 0
+cum_pnl_total_str = f"{cum_pnl_total:+.1f}"
+# 账户收益率
+account_return = d.get("return_series", []) and d["return_series"][-1]["account"] or 0
+
 html = HTML.format(
     title=d["title"],
     latest_date=d["latest_date"],
@@ -726,10 +763,12 @@ html = HTML.format(
     closed_count=closed_count, total_pnl=total_pnl, a_pnl=a_pnl, h_pnl=h_pnl,
     total_cls=total_cls, a_cls=a_cls, h_cls=h_cls,
     chart_height=chart_height,
+    cum_pnl_total=cum_pnl_total_str,
+    account_return=account_return,
     data_json=json.dumps(d, ensure_ascii=False)
 )
 
-out_name = f"银河{d['latest_date']}_{ts}.HTML"
+out_name = f"银河{d['latest_date']}_{bjt.strftime('%Y%m%d-%H%M%S')}.HTML"
 out_path = os.path.join(BASE_DIR, "output", out_name)
 with open(out_path, "w", encoding="utf-8") as f:
     f.write(html)
