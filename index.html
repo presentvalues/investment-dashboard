@@ -18,10 +18,10 @@ h1{text-align:center;font-size:18px;color:#f0f6fc;margin:8px 0 3px;letter-spacin
 .card-sub{font-size:10px;color:#6e7681;margin-top:1px}
 .section{margin-bottom:20px}
 .section-title{font-size:14px;font-weight:600;color:#f0f6fc;margin-bottom:8px;padding-left:8px;border-left:3px solid #58a6ff}
+.section-sub{font-size:11px;color:#6e7681;margin:0 0 8px 11px;font-weight:400;text-align:left}
 table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;background:#161b22;border-radius:8px;overflow:hidden}
-.filter-bar{display:flex;gap:4px;margin-bottom:6px;align-items:center}
+.filter-bar{display:flex;gap:4px;margin-bottom:6px;align-items:center;flex-wrap:wrap}
 .filter-bar input{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 4px;border-radius:4px;font-size:11px;min-width:0}
-.filter-bar select{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 6px;border-radius:4px;font-size:11px}
 .filter-active{border-color:#58a6ff!important;box-shadow:0 0 0 1px #58a6ff}
 .sort-arrow{font-size:10px;margin-left:2px;opacity:0.5}
 .sort-arrow.active{opacity:1;color:#58a6ff}
@@ -33,6 +33,7 @@ td:first-child,td:nth-child(2){text-align:left}
 tr:hover{background:#1c2129}
 .positive{color:#f85149}
 .negative{color:#3fb950}
+.chart-box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:10px}
 .footer{text-align:center;font-size:10px;color:#484f58;margin-top:24px;padding:12px 0;border-top:1px solid #21262d}
 .placeholder{color:#484f58;font-size:18px}
 .no-result{text-align:center;padding:20px;color:#6e7681;font-size:13px}
@@ -50,49 +51,47 @@ tr:hover{background:#1c2129}
   body{padding:8px}
 }
 </style>
-<script src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js" defer></script>
 </head>
 <body>
 
 <h1>银河证券股票持仓每日盈亏看板</h1>
-<p class="subtitle">数据日期: 2026-07-31 ｜ 生成时间: 2026-08-01 08:05:06 ｜ 数据来源: 银河证券</p>
+<p class="subtitle">数据日期: 2026-07-31 ｜ 生成时间: 2026-08-02 12:03:14 ｜ 数据来源: 银河证券</p>
 
-<!-- ── 汇总卡片 ── -->
+<!-- ── 1. 汇总卡片 ── -->
 <div class="section">
-<div class="section-title">📋 汇总</div>
+<div class="section-title">📋 每日汇总</div>
 <div class="cards">
 <div class="card">
 <div class="card-label">股票持仓市值 / 占比</div>
-<div class="card-val">96.7万<span style="font-size:13px;color:#6e7681">/97.1%</span></div>
+<div class="card-val">96.73万<span style="font-size:13px;color:#6e7681">/97.14%</span></div>
 <div class="card-sub">共 27 只持仓</div>
 </div>
 <div class="card">
 <div class="card-label">现金 / 占比</div>
-<div class="card-val">2.9万<span style="font-size:13px;color:#6e7681">/2.9%</span></div>
+<div class="card-val">2.85万<span style="font-size:13px;color:#6e7681">/2.86%</span></div>
 <div class="card-sub">国债逆回购</div>
 </div>
 <div class="card">
 <div class="card-label">总市值</div>
-<div class="card-val">99.6万</div>
+<div class="card-val">99.58万</div>
 <div class="card-sub">股票+现金</div>
 </div>
 <div class="card">
 <div class="card-label">当日盈亏 / 收益率</div>
-<div class="card-val down">-2,616<span style="font-size:13px;color:#6e7681">/-0.27%</span></div>
+<div class="card-val down">-0.26万<span style="font-size:13px;color:#6e7681">/-0.27%</span></div>
 <div class="card-sub">2026年7月31日（星期五）</div>
 </div>
 <div class="card">
 <div class="card-label">持仓总盈亏 / 已清仓总盈亏</div>
-<div class="card-val up">1.5万<span style="font-size:13px;color:#6e7681">/8.4万</span></div>
+<div class="card-val up">1.45万<span style="font-size:13px;color:#6e7681">/8.39万</span></div>
 <div class="card-sub">建仓以来</div>
 </div>
 </div>
 </div>
 
-<!-- ── 当前持仓表格 ── -->
+<!-- ── 2. 当前持仓表格 ── -->
 <div class="section">
-<div class="section-title">📋 当前持仓</div>
-<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:4px;padding-left:11px;text-align:left">点击表头排序 | 输入关键词筛选</p>
+<div class="section-title">📋 每日持仓 <span style="font-size:11px;color:#6e7681;font-weight:400;margin-left:8px">点击表头排序 | 输入关键词筛选</span></div>
 <div class="filter-bar">
   <button onclick="resetDefault()" style="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;white-space:nowrap">↻ 默认</button>
   <input type="text" id="f-code" placeholder="代码" style="width:70px">
@@ -125,49 +124,45 @@ tr:hover{background:#1c2129}
 </div>
 </div>
 
-<!-- ── 账户收益率 ── -->
+<!-- ── 3. 账户收益率 ── -->
 <div class="section">
 <div class="section-title">📈 账户收益率</div>
-<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:4px;padding-left:11px;text-align:left">账户收益率：2.7% ｜ 基准 2026年7月24日 = 0%</p>
-<div id="return-chart" style="width:100%;height:360px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
+<p class="section-sub">账户收益率：+2.72% ｜ 基准 2026年7月24日 = 0%</p>
+<div class="chart-box"><div id="return-chart" style="width:100%;height:380px"></div></div>
 </div>
 
-<!-- ── 已清仓股票累计收益/亏损 ── -->
+<!-- ── 4. 已清仓股票累计收益 ── -->
 <div class="section">
 <div class="section-title">📋 已清仓股票累计收益</div>
-<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:10px;text-align:left;padding-left:11px">
-已清仓 46 只 ｜ 累计已实现净额：<span style="color:up">+8.39 万元</span>，
-｜ 其中 A 股净额：<span style="color:up">+7.60 万元</span>，
-港股净额：<span style="color:up">+0.79 万元</span>
-</p>
+<p class="section-sub">已清仓 46 只 ｜ 累计已实现净额：+8.39 万元，｜ 其中 A 股净额：+7.60 万元，港股净额：+0.79 万元</p>
 <div style="display:flex;gap:12px">
   <div style="flex:1;min-width:0">
     <div style="font-size:12px;color:#c9d1d9;margin-bottom:6px;text-align:center">A 股盈亏前 5</div>
-    <div id="closed-a-chart" style="width:100%;height:208px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
+    <div id="closed-a-chart" style="width:100%;height:220px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px"></div>
   </div>
   <div style="flex:1;min-width:0">
     <div style="font-size:12px;color:#c9d1d9;margin-bottom:6px;text-align:center">港股盈亏前 5</div>
-    <div id="closed-h-chart" style="width:100%;height:208px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
+    <div id="closed-h-chart" style="width:100%;height:220px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px"></div>
   </div>
 </div>
 </div>
 
-<!-- ── 历史年度盈亏 ── -->
+<!-- ── 5. 年度历史盈亏 ── -->
 <div class="section">
 <div class="section-title">📈 年度历史盈亏</div>
-<p class="subtitle" style="font-size:11px;color:#6e7681;margin-bottom:6px;padding-left:11px;text-align:left">年度历史总盈亏：+15.5 万元 ｜ 2021年5月至今</p>
-<div id="yearly-chart" style="width:100%;height:320px;background:#161b22;border:1px solid #30363d;border-radius:8px;padding:8px;display:flex;align-items:center;justify-content:center;color:#6e7681;font-size:13px">📊 图表加载中…</div>
-<div id="yearly-table" style="margin-top:10px;overflow-x:auto"></div>
+<p class="section-sub">历史总盈亏：+15.52 万元 ｜ 2021年5月至今</p>
+<div class="chart-box" style="margin-bottom:10px"><div id="yearly-chart" style="width:100%;height:340px"></div></div>
+<div id="yearly-table"></div>
 </div>
 
-<div class="footer">PRESENTVALUES ｜ 辰影的自由之路</div>
+<div class="footer">PRESENTVALUES ｜ 辰影的自由之路 ｜ 自动生成于 2026-08-02 12:03:14</div>
 
+<script src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js" defer></script>
 <script>
-const D = {"title": "银河证券股票持仓每日盈亏看板", "generate_time": "2026-08-01 08:05:06", "latest_date": "2026-07-31", "summary": {"market_value": 967309.02, "day_pnl": -2616.18, "day_pnl_rate": -0.27, "cash": 28529.44, "total_value": 995838.46, "cum_pnl": 14522.71, "closed_total_pnl": 83944.12, "account_value": null, "time_weighted_return": null, "net_deposit": 15390490.74}, "holdings": [{"code": "000807", "name": "云铝股份", "weight": 24.33, "price": 26.62, "qty": 9100, "market_value": 242242.0, "hold_pnl": 5043.53, "hold_pnl_rate": 2.13, "days": 260}, {"code": "600900", "name": "长江电力", "weight": 20.45, "price": 29.09, "qty": 7000, "market_value": 203630.0, "hold_pnl": 26882.98, "hold_pnl_rate": 15.21, "days": 243}, {"code": "000933", "name": "神火股份", "weight": 8.38, "price": 26.07, "qty": 3200, "market_value": 83424.0, "hold_pnl": -10375.14, "hold_pnl_rate": -11.06, "days": 66}, {"code": "00902", "name": "华能国际", "weight": 5.21, "price": 6.03, "qty": 10000, "market_value": 51930.36, "hold_pnl": 435.95, "hold_pnl_rate": 0.8500000000000001, "days": 180}, {"code": "01898", "name": "中煤能源", "weight": 4.63, "price": 10.71, "qty": 5000, "market_value": 46117.26, "hold_pnl": 320.48, "hold_pnl_rate": 0.7000000000000001, "days": 169}, {"code": "01030", "name": "新城发展", "weight": 3.9800000000000004, "price": 1.44, "qty": 32000, "market_value": 39684.1, "hold_pnl": -16032.48, "hold_pnl_rate": -28.78, "days": 243}, {"code": "02313", "name": "申洲国际", "weight": 3.47, "price": 44.58, "qty": 900, "market_value": 34553.07, "hold_pnl": -11359.17, "hold_pnl_rate": -24.740000000000002, "days": 270}, {"code": "159938", "name": "医药", "weight": 2.54, "price": 0.645, "qty": 39200, "market_value": 25284.0, "hold_pnl": 49.76, "hold_pnl_rate": 0.2, "days": 271}, {"code": "03690", "name": "美团-W", "weight": 2.4, "price": 92.5, "qty": 300, "market_value": 23898.3, "hold_pnl": -7316.21, "hold_pnl_rate": -23.44, "days": 232}, {"code": "512170", "name": "医疗ETF", "weight": 2.3800000000000003, "price": 0.33, "qty": 71700, "market_value": 23661.0, "hold_pnl": 1568.8, "hold_pnl_rate": 7.1, "days": 280}, {"code": "600595", "name": "中孚实业", "weight": 2.37, "price": 6.75, "qty": 3500, "market_value": 23625.0, "hold_pnl": 3217.05, "hold_pnl_rate": 15.76, "days": 38}, {"code": "001286", "name": "陕西能源", "weight": 2.31, "price": 10.47, "qty": 2200, "market_value": 23034.0, "hold_pnl": 2406.16, "hold_pnl_rate": 11.66, "days": 250}, {"code": "600887", "name": "伊利股份", "weight": 2.18, "price": 27.1, "qty": 800, "market_value": 21680.0, "hold_pnl": 873.9, "hold_pnl_rate": 4.2, "days": 270}, {"code": "09988", "name": "阿里巴巴", "weight": 2.02, "price": 117.0, "qty": 200, "market_value": 20152.08, "hold_pnl": 1526.79, "hold_pnl_rate": 8.200000000000001, "days": 36}, {"code": "159941", "name": "纳指ETF", "weight": 1.87, "price": 1.574, "qty": 11800, "market_value": 18573.2, "hold_pnl": 5977.0, "hold_pnl_rate": 47.47, "days": 320}, {"code": "02015", "name": "理想汽车", "weight": 1.8499999999999999, "price": 53.4, "qty": 400, "market_value": 18395.23, "hold_pnl": -11591.71, "hold_pnl_rate": -38.66, "days": 232}, {"code": "515180", "name": "100红利", "weight": 1.06, "price": 1.432, "qty": 7400, "market_value": 10596.8, "hold_pnl": 961.48, "hold_pnl_rate": 9.98, "days": 282}, {"code": "512890", "name": "红利低波", "weight": 1.02, "price": 1.204, "qty": 8400, "market_value": 10113.6, "hold_pnl": -12.9, "hold_pnl_rate": -0.13, "days": 271}, {"code": "01448", "name": "福寿园", "weight": 0.91, "price": 2.64, "qty": 4000, "market_value": 9094.27, "hold_pnl": -1811.4, "hold_pnl_rate": -16.61, "days": 239}, {"code": "601006", "name": "大秦铁路", "weight": 0.75, "price": 4.97, "qty": 1500, "market_value": 7455.0, "hold_pnl": -1328.33, "hold_pnl_rate": -15.120000000000001, "days": 262}, {"code": "159928", "name": "消费ETF", "weight": 0.73, "price": 0.697, "qty": 10400, "market_value": 7248.8, "hold_pnl": -683.72, "hold_pnl_rate": -8.62, "days": 282}, {"code": "02196", "name": "复星医药", "weight": 0.7100000000000001, "price": 16.42, "qty": 500, "market_value": 7070.45, "hold_pnl": 5634.05, "hold_pnl_rate": 392.21, "days": 263}, {"code": "513500", "name": "标普500", "weight": 0.63, "price": 2.509, "qty": 2500, "market_value": 6272.5, "hold_pnl": 1214.2, "hold_pnl_rate": 24.01, "days": 284}, {"code": "159892", "name": "恒生生物", "weight": 0.43, "price": 0.715, "qty": 6000, "market_value": 4290.0, "hold_pnl": 960.55, "hold_pnl_rate": 28.849999999999998, "days": 271}, {"code": "600863", "name": "华能蒙电", "weight": 0.35000000000000003, "price": 4.93, "qty": 700, "market_value": 3451.0, "hold_pnl": 17795.63, "hold_pnl_rate": 0, "days": 612}, {"code": "601155", "name": "新城控股", "weight": 0.11, "price": 11.24, "qty": 100, "market_value": 1124.0, "hold_pnl": 177.89, "hold_pnl_rate": 18.8, "days": 505}, {"code": "600305", "name": "恒顺醋业", "weight": 0.06999999999999999, "price": 7.09, "qty": 100, "market_value": 709.0, "hold_pnl": -7.11, "hold_pnl_rate": -0.9900000000000001, "days": 45}], "closed_analysis": {"A股": [{"code": "002027", "name": "分众传媒", "pnl": 0}, {"code": "159920", "name": "恒生ETF", "pnl": 0}, {"code": "159938", "name": "医药", "pnl": 0}, {"code": "603259", "name": "药明康德", "pnl": 0}, {"code": "002027", "name": "分众传媒", "pnl": 0}, {"code": "159920", "name": "恒生ETF", "pnl": 0}, {"code": "159938", "name": "医药", "pnl": 0}, {"code": "161028", "name": "新能源车", "pnl": 0}, {"code": "510310", "name": "HS300ETF", "pnl": 0}, {"code": "512170", "name": "医疗ETF", "pnl": 0}, {"code": "513060", "name": "恒生医疗", "pnl": 0}, {"code": "588000", "name": "科创50", "pnl": 0}, {"code": "601899", "name": "紫金矿业", "pnl": 0}, {"code": "000933", "name": "神火股份", "pnl": 0}, {"code": "601225", "name": "陕西煤业", "pnl": 0}, {"code": "000792", "name": "盐湖股份", "pnl": 0}, {"code": "501300", "name": "美元债", "pnl": 0}, {"code": "002466", "name": "天齐锂业", "pnl": 0}, {"code": "601168", "name": "西部矿业", "pnl": 0}, {"code": "600795", "name": "国电电力", "pnl": 0}, {"code": "600938", "name": "中国海油", "pnl": 0}, {"code": "603167", "name": "渤海轮渡", "pnl": 0}, {"code": "159915", "name": "创业板", "pnl": 0}, {"code": "159939", "name": "信息技术", "pnl": 0}, {"code": "159940", "name": "金融", "pnl": 0}, {"code": "502010", "name": "证券LOF", "pnl": 0}, {"code": "510300", "name": "300ETF", "pnl": 0}, {"code": "512580", "name": "环保ETF", "pnl": 0}, {"code": "512980", "name": "传媒ETF", "pnl": 0}, {"code": "513060", "name": "恒生医疗", "pnl": 0}, {"code": "513970", "name": "恒生消费", "pnl": 0}, {"code": "600989", "name": "宝丰能源", "pnl": 0}, {"code": "118059", "name": "颀中转债", "pnl": 0}, {"code": "118065", "name": "艾为转债", "pnl": 0}, {"code": "601088", "name": "中国神华", "pnl": 0}, {"code": "601898", "name": "中煤能源", "pnl": 0}, {"code": "113700", "name": "海天转债", "pnl": 0}, {"code": "000933", "name": "神火股份", "pnl": 0}, {"code": "600011", "name": "华能国际", "pnl": 0}, {"code": "600886", "name": "国投电力", "pnl": 0}, {"code": "600985", "name": "淮北矿业", "pnl": 0}, {"code": "510880", "name": "红利ETF", "pnl": 0}, {"code": "000651", "name": "格力电器", "pnl": 0}, {"code": "123268", "name": "本川转债", "pnl": 0}, {"code": "601225", "name": "陕西煤业", "pnl": 0}, {"code": "111025", "name": "N圣泉转", "pnl": 0}], "港股": [{"code": "01093", "name": "石药集团", "pnl": 0}, {"code": "02196", "name": "复星医药", "pnl": 0}, {"code": "03690", "name": "美团-W", "pnl": 0}, {"code": "09988", "name": "阿里巴巴", "pnl": 0}, {"code": "02228", "name": "晶泰控股", "pnl": 0}, {"code": "02319", "name": "蒙牛乳业", "pnl": 0}]}, "closed_merged": {"summary": {"count": 46, "total_pnl": 83944.12, "a_total": 76037.43, "h_total": 7906.69}, "a_stock": {"profit": [{"code": "000933", "name": "神火股份", "pnl": 17933.94}, {"code": "159915", "name": "创业板", "pnl": 9883.49}, {"code": "510300", "name": "300ETF", "pnl": 6814.49}, {"code": "601898", "name": "中煤能源", "pnl": 5442.1}, {"code": "512580", "name": "环保ETF", "pnl": 4288.78}], "loss": [{"code": "000651", "name": "格力电器", "pnl": -96.78}]}, "h_stock": {"profit": [{"code": "01093", "name": "石药集团", "pnl": 2513.3}, {"code": "02319", "name": "蒙牛乳业", "pnl": 1560.58}, {"code": "09988", "name": "阿里巴巴", "pnl": 1373.36}, {"code": "02196", "name": "复星医药", "pnl": 1173.06}, {"code": "03690", "name": "美团-W", "pnl": 1014.5}], "loss": []}}, "yearly_data": {"years": [{"year": 2021, "begin": 0, "net_in": 869200, "pnl": -20900, "end": 848300, "twr": -2.57, "mwr": -2.3, "dividend": 9.48, "csi300": -1.96, "chinext": 7.78, "hsi": -18.55, "sp500": 13.99}, {"year": 2022, "begin": 848300, "net_in": 184000, "pnl": -114900, "end": 917400, "twr": -12.09, "mwr": -14.37, "dividend": -0.37, "csi300": -19.84, "chinext": -29.03, "hsi": -15.46, "sp500": -19.44}, {"year": 2023, "begin": 917400, "net_in": 376600, "pnl": -78600, "end": 1215400, "twr": -7.35, "mwr": -5.18, "dividend": 6.34, "csi300": -9.14, "chinext": -18.77, "hsi": -13.82, "sp500": 24.23}, {"year": 2024, "begin": 1215400, "net_in": 143700, "pnl": 284500, "end": 1643600, "twr": 21.9, "mwr": 21.26, "dividend": 18.76, "csi300": 18.24, "chinext": 14.83, "hsi": 17.67, "sp500": 23.31}, {"year": 2025, "begin": 1643600, "net_in": 163300, "pnl": 85100, "end": 1892000, "twr": 4.88, "mwr": 5.15, "dividend": 3.76, "csi300": 20.98, "chinext": 51.56, "hsi": 27.77, "sp500": 16.39}], "cum_pnl": [{"year": 2021, "value": -2.09}, {"year": 2022, "value": -13.58}, {"year": 2023, "value": -21.44}, {"year": 2024, "value": 7.01}, {"year": 2025, "value": 15.52}]}, "cum_pnl_seq": [{"date": "2024-01-29", "cum_pnl": 0.0}, {"date": "2024-10-08", "cum_pnl": 0.0}, {"date": "2025-04-09", "cum_pnl": 0.0}, {"date": "2025-04-14", "cum_pnl": 0.0}, {"date": "2025-05-14", "cum_pnl": 0.0}, {"date": "2025-05-21", "cum_pnl": 0.0}, {"date": "2025-07-03", "cum_pnl": 0.0}, {"date": "2025-07-21", "cum_pnl": 0.0}, {"date": "2025-07-25", "cum_pnl": 0.0}, {"date": "2025-08-11", "cum_pnl": 0.0}, {"date": "2025-09-04", "cum_pnl": 0.0}, {"date": "2025-11-03", "cum_pnl": 0.0}, {"date": "2025-11-05", "cum_pnl": 0.0}, {"date": "2025-11-06", "cum_pnl": 0.0}, {"date": "2025-11-24", "cum_pnl": 0.0}, {"date": "2026-01-09", "cum_pnl": 0.0}, {"date": "2026-02-27", "cum_pnl": 0.0}, {"date": "2026-03-09", "cum_pnl": 0.0}, {"date": "2026-03-12", "cum_pnl": 0.0}, {"date": "2026-03-13", "cum_pnl": 0.0}, {"date": "2026-03-18", "cum_pnl": 0.0}, {"date": "2026-04-29", "cum_pnl": 0.0}, {"date": "2026-05-08", "cum_pnl": 0.0}, {"date": "2026-05-15", "cum_pnl": 0.0}, {"date": "2026-07-21", "cum_pnl": 0.0}], "return_series": [{"date": "2026-07-24", "account": 0.0, "shanghai": 0.0, "csi300": 0.0, "chinext": 0.0, "total_value": 969641.53}, {"date": "2026-07-27", "account": -0.03, "shanghai": 1.15, "csi300": 1.15, "chinext": 3.16, "total_value": 969311.62}, {"date": "2026-07-28", "account": 0.4, "shanghai": -0.02, "csi300": -1.71, "chinext": -4.42, "total_value": 973488.39}, {"date": "2026-07-29", "account": 2.12, "shanghai": 0.37, "csi300": -1.05, "chinext": -2.94, "total_value": 990216.18}, {"date": "2026-07-30", "account": 3.02, "shanghai": -0.25, "csi300": -2.14, "chinext": -6.79, "total_value": 998920.19}, {"date": "2026-07-31", "account": 2.7, "shanghai": 0.47, "csi300": -1.31, "chinext": -3.93, "total_value": 995838.46}]};
+const D = {"title": "银河证券股票持仓每日盈亏看板", "generate_time": "2026-08-02 12:03:14", "latest_date": "2026-07-31", "baseline_date": "2026-07-24", "summary": {"market_value": 967309.02, "day_pnl": -2616.18, "day_pnl_rate": -0.27, "cash": 28529.44, "total_value": 995838.46, "cum_pnl": 14522.71, "closed_total_pnl": 83944.12, "account_value": null, "time_weighted_return": null, "net_deposit": 15390490.74}, "holdings": [{"code": "000807", "name": "云铝股份", "weight": 24.33, "price": 26.62, "qty": 9100, "market_value": 242242.0, "hold_pnl": 5043.53, "hold_pnl_rate": 2.13, "days": 260}, {"code": "600900", "name": "长江电力", "weight": 20.45, "price": 29.09, "qty": 7000, "market_value": 203630.0, "hold_pnl": 26882.98, "hold_pnl_rate": 15.21, "days": 243}, {"code": "000933", "name": "神火股份", "weight": 8.38, "price": 26.07, "qty": 3200, "market_value": 83424.0, "hold_pnl": -10375.14, "hold_pnl_rate": -11.06, "days": 66}, {"code": "000902", "name": "华能国际", "weight": 5.21, "price": 6.03, "qty": 10000, "market_value": 51930.36, "hold_pnl": 435.95, "hold_pnl_rate": 0.8500000000000001, "days": 180}, {"code": "001898", "name": "中煤能源", "weight": 4.63, "price": 10.71, "qty": 5000, "market_value": 46117.26, "hold_pnl": 320.48, "hold_pnl_rate": 0.7000000000000001, "days": 169}, {"code": "001030", "name": "新城发展", "weight": 3.9800000000000004, "price": 1.44, "qty": 32000, "market_value": 39684.1, "hold_pnl": -16032.48, "hold_pnl_rate": -28.78, "days": 243}, {"code": "002313", "name": "申洲国际", "weight": 3.47, "price": 44.58, "qty": 900, "market_value": 34553.07, "hold_pnl": -11359.17, "hold_pnl_rate": -24.740000000000002, "days": 270}, {"code": "159938", "name": "医药", "weight": 2.54, "price": 0.645, "qty": 39200, "market_value": 25284.0, "hold_pnl": 49.76, "hold_pnl_rate": 0.2, "days": 271}, {"code": "003690", "name": "美团-W", "weight": 2.4, "price": 92.5, "qty": 300, "market_value": 23898.3, "hold_pnl": -7316.21, "hold_pnl_rate": -23.44, "days": 232}, {"code": "512170", "name": "医疗ETF", "weight": 2.3800000000000003, "price": 0.33, "qty": 71700, "market_value": 23661.0, "hold_pnl": 1568.8, "hold_pnl_rate": 7.1, "days": 280}, {"code": "600595", "name": "中孚实业", "weight": 2.37, "price": 6.75, "qty": 3500, "market_value": 23625.0, "hold_pnl": 3217.05, "hold_pnl_rate": 15.76, "days": 38}, {"code": "001286", "name": "陕西能源", "weight": 2.31, "price": 10.47, "qty": 2200, "market_value": 23034.0, "hold_pnl": 2406.16, "hold_pnl_rate": 11.66, "days": 250}, {"code": "600887", "name": "伊利股份", "weight": 2.18, "price": 27.1, "qty": 800, "market_value": 21680.0, "hold_pnl": 873.9, "hold_pnl_rate": 4.2, "days": 270}, {"code": "009988", "name": "阿里巴巴", "weight": 2.02, "price": 117.0, "qty": 200, "market_value": 20152.08, "hold_pnl": 1526.79, "hold_pnl_rate": 8.200000000000001, "days": 36}, {"code": "159941", "name": "纳指ETF", "weight": 1.87, "price": 1.574, "qty": 11800, "market_value": 18573.2, "hold_pnl": 5977.0, "hold_pnl_rate": 47.47, "days": 320}, {"code": "002015", "name": "理想汽车", "weight": 1.8499999999999999, "price": 53.4, "qty": 400, "market_value": 18395.23, "hold_pnl": -11591.71, "hold_pnl_rate": -38.66, "days": 232}, {"code": "515180", "name": "100红利", "weight": 1.06, "price": 1.432, "qty": 7400, "market_value": 10596.8, "hold_pnl": 961.48, "hold_pnl_rate": 9.98, "days": 282}, {"code": "512890", "name": "红利低波", "weight": 1.02, "price": 1.204, "qty": 8400, "market_value": 10113.6, "hold_pnl": -12.9, "hold_pnl_rate": -0.13, "days": 271}, {"code": "001448", "name": "福寿园", "weight": 0.91, "price": 2.64, "qty": 4000, "market_value": 9094.27, "hold_pnl": -1811.4, "hold_pnl_rate": -16.61, "days": 239}, {"code": "601006", "name": "大秦铁路", "weight": 0.75, "price": 4.97, "qty": 1500, "market_value": 7455.0, "hold_pnl": -1328.33, "hold_pnl_rate": -15.120000000000001, "days": 262}, {"code": "159928", "name": "消费ETF", "weight": 0.73, "price": 0.697, "qty": 10400, "market_value": 7248.8, "hold_pnl": -683.72, "hold_pnl_rate": -8.62, "days": 282}, {"code": "002196", "name": "复星医药", "weight": 0.7100000000000001, "price": 16.42, "qty": 500, "market_value": 7070.45, "hold_pnl": 5634.05, "hold_pnl_rate": 392.21, "days": 263}, {"code": "513500", "name": "标普500", "weight": 0.63, "price": 2.509, "qty": 2500, "market_value": 6272.5, "hold_pnl": 1214.2, "hold_pnl_rate": 24.01, "days": 284}, {"code": "159892", "name": "恒生生物", "weight": 0.43, "price": 0.715, "qty": 6000, "market_value": 4290.0, "hold_pnl": 960.55, "hold_pnl_rate": 28.849999999999998, "days": 271}, {"code": "600863", "name": "华能蒙电", "weight": 0.35000000000000003, "price": 4.93, "qty": 700, "market_value": 3451.0, "hold_pnl": 17795.63, "hold_pnl_rate": 0, "days": 612}, {"code": "601155", "name": "新城控股", "weight": 0.11, "price": 11.24, "qty": 100, "market_value": 1124.0, "hold_pnl": 177.89, "hold_pnl_rate": 18.8, "days": 505}, {"code": "600305", "name": "恒顺醋业", "weight": 0.06999999999999999, "price": 7.09, "qty": 100, "market_value": 709.0, "hold_pnl": -7.11, "hold_pnl_rate": -0.9900000000000001, "days": 45}], "closed_analysis": {"A股": [{"code": "000933", "name": "神火股份", "pnl": 17933.94}, {"code": "159915", "name": "创业板", "pnl": 9883.49}, {"code": "510300", "name": "300ETF", "pnl": 6814.49}, {"code": "601898", "name": "中煤能源", "pnl": 5442.1}, {"code": "512580", "name": "环保ETF", "pnl": 4288.78}, {"code": "000651", "name": "格力电器", "pnl": -96.78}], "港股": [{"code": "01093", "name": "石药集团", "pnl": 2513.3}, {"code": "02319", "name": "蒙牛乳业", "pnl": 1560.58}, {"code": "09988", "name": "阿里巴巴", "pnl": 1373.36}, {"code": "02196", "name": "复星医药", "pnl": 1173.06}, {"code": "03690", "name": "美团-W", "pnl": 1014.5}]}, "closed_merged": {"summary": {"count": 46, "total_pnl": 83944.12, "a_total": 76037.43, "h_total": 7906.69}, "a_stock": {"profit": [{"code": "000933", "name": "神火股份", "pnl": 17933.94}, {"code": "159915", "name": "创业板", "pnl": 9883.49}, {"code": "510300", "name": "300ETF", "pnl": 6814.49}, {"code": "601898", "name": "中煤能源", "pnl": 5442.1}, {"code": "512580", "name": "环保ETF", "pnl": 4288.78}], "loss": [{"code": "000651", "name": "格力电器", "pnl": -96.78}]}, "h_stock": {"profit": [{"code": "01093", "name": "石药集团", "pnl": 2513.3}, {"code": "02319", "name": "蒙牛乳业", "pnl": 1560.58}, {"code": "09988", "name": "阿里巴巴", "pnl": 1373.36}, {"code": "02196", "name": "复星医药", "pnl": 1173.06}, {"code": "03690", "name": "美团-W", "pnl": 1014.5}], "loss": []}}, "cum_pnl_seq": [{"date": "2024-01-29", "cum_pnl": 31.51}, {"date": "2024-10-08", "cum_pnl": 3987.89}, {"date": "2025-04-09", "cum_pnl": 10556.73}, {"date": "2025-04-14", "cum_pnl": 10801.45}, {"date": "2025-05-14", "cum_pnl": 11052.01}, {"date": "2025-05-21", "cum_pnl": 11162.51}, {"date": "2025-07-03", "cum_pnl": 11266.33}, {"date": "2025-07-21", "cum_pnl": 14952.69}, {"date": "2025-07-25", "cum_pnl": 17340.55}, {"date": "2025-08-11", "cum_pnl": 17681.73}, {"date": "2025-09-04", "cum_pnl": 18703.58}, {"date": "2025-11-03", "cum_pnl": 19789.74}, {"date": "2025-11-05", "cum_pnl": 49053.57}, {"date": "2025-11-06", "cum_pnl": 49121.28}, {"date": "2025-11-24", "cum_pnl": 49548.33}, {"date": "2026-01-09", "cum_pnl": 49820.22}, {"date": "2026-02-27", "cum_pnl": 50473.22}, {"date": "2026-03-09", "cum_pnl": 57267.58}, {"date": "2026-03-12", "cum_pnl": 57839.58}, {"date": "2026-03-13", "cum_pnl": 80901.18}, {"date": "2026-03-18", "cum_pnl": 81300.06}, {"date": "2026-04-29", "cum_pnl": 81203.28}, {"date": "2026-05-08", "cum_pnl": 81915.62}, {"date": "2026-05-15", "cum_pnl": 83474.92}, {"date": "2026-07-21", "cum_pnl": 83944.12}], "yearly_data": {"years": [{"year": 2021, "begin": 0.0, "net_in": 869200.0, "pnl": -20900.0, "end": 848300.0, "twr": -2.57, "mwr": -2.3, "dividend": 9.48, "csi300": -1.96, "chinext": 7.78, "hsi": -18.55, "sp500": 13.99}, {"year": 2022, "begin": 848300.0, "net_in": 184000.0, "pnl": -114900.0, "end": 917400.0, "twr": -12.09, "mwr": -14.37, "dividend": -0.37, "csi300": -19.84, "chinext": -29.03, "hsi": -15.46, "sp500": -19.44}, {"year": 2023, "begin": 917400.0, "net_in": 376600.0, "pnl": -78600.0, "end": 1215400.0, "twr": -7.35, "mwr": -5.18, "dividend": 6.34, "csi300": -9.14, "chinext": -18.77, "hsi": -13.82, "sp500": 24.23}, {"year": 2024, "begin": 1215400.0, "net_in": 143700.0, "pnl": 284500.0, "end": 1643600.0, "twr": 21.9, "mwr": 21.26, "dividend": 18.76, "csi300": 18.24, "chinext": 14.83, "hsi": 17.67, "sp500": 23.31}, {"year": 2025, "begin": 1643600.0, "net_in": 163300.0, "pnl": 85100.0, "end": 1892000.0, "twr": 4.88, "mwr": 5.15, "dividend": 3.76, "csi300": 20.98, "chinext": 51.56, "hsi": 27.77, "sp500": 16.39}], "cum_pnl": [{"year": 2021, "value": -2.09}, {"year": 2022, "value": -13.58}, {"year": 2023, "value": -21.44}, {"year": 2024, "value": 7.01}, {"year": 2025, "value": 15.52}]}, "return_series": [{"date": "2026-07-24", "account": 0.0, "shanghai": 0.0, "csi300": 0.0, "chinext": 0.0, "total_value": 969462.34}, {"date": "2026-07-27", "account": 0.0, "shanghai": 1.15, "csi300": 1.15, "chinext": 3.16, "total_value": 969470.84}, {"date": "2026-07-28", "account": 0.42, "shanghai": -0.02, "csi300": -1.71, "chinext": -4.42, "total_value": 973492.74}, {"date": "2026-07-29", "account": 2.14, "shanghai": 0.37, "csi300": -1.05, "chinext": -2.94, "total_value": 990219.6}, {"date": "2026-07-30", "account": 3.04, "shanghai": -0.25, "csi300": -2.14, "chinext": -6.79, "total_value": 998922.73}, {"date": "2026-07-31", "account": 2.72, "shanghai": 0.47, "csi300": -1.31, "chinext": -3.93, "total_value": 995838.46}]};
 
+// ══ 持仓表格：排序 + 筛选 ══
 let holdings, sortCol, sortDir;
-
-// ── 排序（不切换方向，参数控制）──
 function doSort(col, dir) {
   sortCol = col; sortDir = dir || -1;
   holdings.sort((a,b) => {
@@ -175,17 +170,12 @@ function doSort(col, dir) {
     if (typeof va === 'string') return sortDir * va.localeCompare(vb);
     return sortDir * (va - vb);
   });
-  renderTable();
-  updateArrows();
+  renderTable(); updateArrows();
 }
-
-// ── 点击表头切换排序 ──
 function toggleSort(col) {
   if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = -1; }
   doSort(col, sortDir);
 }
-
-// ── 筛选 ──
 function applyFilters() {
   const el = id => document.getElementById(id);
   const get = id => { const e=el(id); return e ? e.value.trim() : ''; };
@@ -211,30 +201,24 @@ function applyFilters() {
     return true;
   });
 }
-
 function clearFilters() {
-  document.querySelectorAll('.filter-bar input').forEach(el => { el.value = ''; el.classList.remove('filter-active'); });
+  document.querySelectorAll('.filter-bar input').forEach(el => { el.value=''; el.classList.remove('filter-active'); });
   holdings = applyFilters();
-  if (sortCol) doSort(sortCol, sortDir);
-  else renderTable();
+  if (sortCol) doSort(sortCol, sortDir); else renderTable();
 }
-
 function resetDefault() {
-  document.querySelectorAll('.filter-bar input').forEach(el => { el.value = ''; el.classList.remove('filter-active'); });
+  document.querySelectorAll('.filter-bar input').forEach(el => { el.value=''; el.classList.remove('filter-active'); });
   holdings = D.holdings;
   doSort('weight', -1);
 }
-
-// ── 渲染 ──
 function renderTable() {
   const tb = document.getElementById('holdings-body');
-  if (!holdings || holdings.length===0) { tb.innerHTML='<tr><td colspan="9" class="no-result">无匹配结果</td></tr>'; return; }
-  tb.innerHTML = holdings.map((r,i) => {
+  if (!holdings || holdings.length===0) { tb.innerHTML='<tr><td colspan="10" class="no-result">无匹配结果</td></tr>'; return; }
+  tb.innerHTML = holdings.map((r, i) => {
     const c = v => v>=0?'positive':'negative';
     return '<tr><td style="color:#6e7681">'+(i+1)+'</td><td>'+r.code+'</td><td>'+r.name+'</td><td>'+r.weight.toFixed(1)+'%</td><td>'+r.price.toFixed(2)+'</td><td>'+r.qty.toLocaleString()+'</td><td>'+r.market_value.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0})+'</td><td class="'+c(r.hold_pnl)+'">'+r.hold_pnl.toLocaleString(undefined,{minimumFractionDigits:0,maximumFractionDigits:0})+'</td><td class="'+c(r.hold_pnl_rate)+'">'+r.hold_pnl_rate.toFixed(2)+'%</td><td>'+r.days+'</td></tr>';
   }).join('');
 }
-
 function updateArrows() {
   document.querySelectorAll('th[data-col]').forEach(th => {
     const a = th.querySelector('.sort-arrow');
@@ -245,112 +229,189 @@ function updateArrows() {
   });
 }
 
-// ── 收益图（双Y轴：左=总市值柱状图，右=收益率折线）──
-function renderReturnChart() {
-  if (!D.return_series || D.return_series.length < 2) return;
-  const rs = D.return_series;
-  const dates = rs.map(r => r.date.slice(5));
-  const chart = echarts.init(document.getElementById('return-chart'));
-  // 动态计算整数刻度：上限 = ceil(max/5)*5，每档 = 上限/5，零点下方对称一档
-  const tvVals = rs.map(r => r.total_value).filter(v => v != null);
-  const retVals = [].concat(rs.map(r => r.account), rs.map(r => r.shanghai), rs.map(r => r.csi300), rs.map(r => r.chinext)).filter(v => v != null);
-  const tvMaxW = Math.max(...tvVals) / 10000;                     // 万为单位
-  const retMin = Math.min(...retVals), retMax = Math.max(...retVals);
-  // 左轴：50万为步长取整，保证柱子不超过上限的2/3
-  const leftTopRaw = Math.ceil(tvMaxW / 50) * 50;
-  const leftTop = (tvMaxW / leftTopRaw > 2/3) ? leftTopRaw + 50 : leftTopRaw;
-  const leftStep = leftTop / 5;                                    // 每档（万）
-  const rightTop = Math.ceil(retMax / 5) * 5;                     // 上限（%），5%步长
-  const rightBottom = Math.floor(retMin / 5) * 5;                 // 下限（%），5%步长
-  chart.setOption({
-    tooltip: {
-      trigger: 'axis',
-      formatter: function(params) {
-        let s = '<b>' + params[0].axisValue + '</b><br/>';
-        params.forEach(p => {
-          if (p.seriesName === '总市值') {
-            s += p.marker + ' ' + p.seriesName + ': ' + (p.value/10000).toFixed(2) + '万<br/>';
-          } else {
-            const v = p.value !== null ? p.value.toFixed(2) + '%' : '—';
-            s += p.marker + ' ' + p.seriesName + ': ' + v + '<br/>';
+// ══ ECharts 渲染（3 秒超时降级）══
+function renderCharts() {
+  // ── 板块3：账户收益率（左=总市值柱状，右=收益率折线）──
+  try {
+    const rs = D.return_series || [];
+    if (rs.length >= 2) {
+      const dates = rs.map(r => r.date.slice(5));
+      const tvVals = rs.map(r => r.total_value).filter(v => v != null);
+      const retVals = [].concat(rs.map(r => r.account), rs.map(r => r.shanghai), rs.map(r => r.csi300), rs.map(r => r.chinext)).filter(v => v != null);
+      const tvMaxW = Math.max(...tvVals) / 10000;
+      const retMin = Math.min(...retVals), retMax = Math.max(...retVals);
+      const leftTopRaw = Math.ceil(tvMaxW / 50) * 50;
+      const leftTop = (tvMaxW / leftTopRaw > 2/3) ? leftTopRaw + 50 : leftTopRaw;
+      const leftStep = leftTop / 5;
+      const rightTop = Math.ceil(retMax / 5) * 5;
+      const rightBottom = Math.floor(retMin / 5) * 5;
+      echarts.init(document.getElementById('return-chart')).setOption({
+        tooltip: {
+          trigger: 'axis',
+          formatter: function(params) {
+            let s = '<b>' + params[0].axisValue + '</b><br/>';
+            params.forEach(p => {
+              if (p.seriesName === '总市值') s += p.marker + ' 总市值: ' + (p.value/10000).toFixed(2) + '万<br/>';
+              else s += p.marker + ' ' + p.seriesName + ': ' + (p.value !== null ? (p.value>=0?'+':'') + p.value.toFixed(2) + '%' : '—') + '<br/>';
+            });
+            return s;
           }
-        });
-        return s;
-      }
-    },
-    legend: { data: ['总市值','账户','上证指数','沪深300','创业板'], top: 0, textStyle: { color: '#c9d1d9' } },
-    grid: { left: '10%', right: '10%', top: '15%', bottom: '8%' },
-    xAxis: { type: 'category', data: dates, axisLabel: { color: '#6e7681', fontSize: 10 } },
-    yAxis: [
-      {
-        type: 'value', min: -(leftStep * 10000), max: leftTop * 10000, interval: leftStep * 10000,
-        name: '总市值(万)',
-        nameTextStyle: { color: '#6e7681', fontSize: 10 },
-        axisLabel: { formatter: v => (v/10000).toFixed(0), color: '#6e7681', fontSize: 10 },
-        splitLine: { lineStyle: { color: '#21262d' } }
-      },
-      {
-        type: 'value', min: rightBottom, max: rightTop, interval: 5,
-        name: '收益率(%)',
-        nameTextStyle: { color: '#6e7681', fontSize: 10 },
-        axisLabel: { formatter: v => v.toFixed(0)+'%', color: '#6e7681', fontSize: 10 },
-        splitLine: { show: false }
-      }
-    ],
-    series: [
-      {
-        name: '总市值', type: 'bar', yAxisIndex: 0,
-        data: rs.map(r => r.total_value),
-        itemStyle: { color: 'rgba(88,166,255,0.35)', borderColor: '#58a6ff', borderWidth: 1 },
-        barWidth: '40%'
-      },
-      {
-        name: '账户', type: 'line', yAxisIndex: 1,
-        data: rs.map(r => r.account),
-        lineStyle: { color: '#f85149', width: 2 },
-        itemStyle: { color: '#f85149' },
-        symbol: 'circle', symbolSize: 8, connectNulls: false,
-        markLine: {
-          silent: true, symbol: 'none',
-          lineStyle: { color: '#6e7681', type: 'dashed', width: 1 },
-          label: { show: false },
-          data: [{ yAxis: 0 }]
-        }
-      },
-      {
-        name: '上证指数', type: 'line', yAxisIndex: 1,
-        data: rs.map(r => r.shanghai),
-        lineStyle: { color: '#ff8c00', width: 0.75 },
-        itemStyle: { color: '#ff8c00' },
-        symbol: 'diamond', symbolSize: 6
-      },
-      {
-        name: '沪深300', type: 'line', yAxisIndex: 1,
-        data: rs.map(r => r.csi300),
-        lineStyle: { color: '#d2991d', width: 0.75 },
-        itemStyle: { color: '#d2991d' },
-        symbol: 'diamond', symbolSize: 6
-      },
-      {
-        name: '创业板', type: 'line', yAxisIndex: 1,
-        data: rs.map(r => r.chinext),
-        lineStyle: { color: '#bb6bd9', width: 0.75 },
-        itemStyle: { color: '#bb6bd9' },
-        symbol: 'triangle', symbolSize: 7
-      }
-    ]
-  });
-  window.addEventListener('resize', () => chart.resize());
+        },
+        legend: { data: ['总市值','账户','上证指数','沪深300','创业板'], top: 0, textStyle: { color: '#c9d1d9' } },
+        grid: { left: '10%', right: '10%', top: '15%', bottom: '8%' },
+        xAxis: { type: 'category', data: dates, axisLabel: { color: '#6e7681', fontSize: 10 } },
+        yAxis: [
+          { type: 'value', min: -(leftStep*10000), max: leftTop*10000, interval: leftStep*10000, name: '总市值(万)',
+             nameTextStyle: { color: '#6e7681', fontSize: 10 },
+             axisLabel: { formatter: v => (v/10000).toFixed(0), color: '#6e7681', fontSize: 10 },
+             splitLine: { lineStyle: { color: '#21262d' } } },
+          { type: 'value', min: rightBottom, max: rightTop, interval: 5, name: '收益率(%)',
+             nameTextStyle: { color: '#6e7681', fontSize: 10 },
+             axisLabel: { formatter: v => v.toFixed(0)+'%', color: '#6e7681', fontSize: 10 },
+             splitLine: { show: false } }
+        ],
+        series: [
+          { name: '总市值', type: 'bar', yAxisIndex: 0, data: rs.map(r => r.total_value),
+             itemStyle: { color: 'rgba(88,166,255,0.35)', borderColor: '#58a6ff', borderWidth: 1 }, barWidth: '40%' },
+          { name: '账户', type: 'line', yAxisIndex: 1, data: rs.map(r => r.account),
+             lineStyle: { color: '#f85149', width: 2 }, itemStyle: { color: '#f85149' },
+             symbol: 'circle', symbolSize: 8,
+             markLine: { silent: true, symbol: 'none', lineStyle: { color: '#6e7681', type: 'dashed', width: 1 },
+                         label: { show: false }, data: [{ yAxis: 0 }] } },
+          { name: '上证指数', type: 'line', yAxisIndex: 1, data: rs.map(r => r.shanghai),
+             lineStyle: { color: '#ff8c00', width: 0.75 }, itemStyle: { color: '#ff8c00' }, symbol: 'diamond', symbolSize: 6 },
+          { name: '沪深300', type: 'line', yAxisIndex: 1, data: rs.map(r => r.csi300),
+             lineStyle: { color: '#d2991d', width: 0.75 }, itemStyle: { color: '#d2991d' }, symbol: 'diamond', symbolSize: 6 },
+          { name: '创业板', type: 'line', yAxisIndex: 1, data: rs.map(r => r.chinext),
+             lineStyle: { color: '#bb6bd9', width: 0.75 }, itemStyle: { color: '#bb6bd9' }, symbol: 'triangle', symbolSize: 7 }
+        ]
+      });
+    }
+  } catch(e) { document.getElementById('return-chart').innerHTML = '<div class="placeholder">图表渲染失败: '+e.message+'</div>'; }
+
+  // ── 板块4：已清仓横向柱状图（A股/港股分两个图）──
+  function renderClosed(containerId, data, title) {
+    const el = document.getElementById(containerId);
+    if (!data || (data.profit.length === 0 && data.loss.length === 0)) { el.innerHTML = '<div style="color:#6e7681;text-align:center;padding:20px;font-size:12px">暂无数据</div>'; return; }
+    const cats = []; const vals = [];
+    data.profit.forEach(x => { cats.push(x.code + ' ' + x.name); vals.push(x.pnl / 10000); });
+    data.loss.forEach(x => { cats.push(x.code + ' ' + x.name); vals.push(x.pnl / 10000); });
+    let maxP = 0, maxL = 0;
+    vals.forEach(v => { if (v > maxP) maxP = v; if (v < -maxL) maxL = -v; });
+    let axisMax = Math.ceil(Math.max(maxP, maxL, 0.01) / 5) * 5; axisMax = Math.max(axisMax, 5);
+    echarts.init(el).setOption({
+      tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' },
+        formatter: p => p[0].name + '<br/>盈亏: ' + (p[0].value>=0?'+':'') + p[0].value.toFixed(2) + '万' },
+      grid: { left: '2%', right: '12%', top: 5, bottom: 5, containLabel: true },
+      xAxis: { type: 'value', min: -axisMax, max: axisMax, interval: axisMax/5,
+        axisLabel: { show: false }, axisTick: { show: false }, splitLine: { show: false }, axisLine: { show: false } },
+      yAxis: { type: 'category', data: cats, inverse: true,
+        axisLabel: { color: '#c9d1d9', fontSize: 10, width: 85, overflow: 'truncate' },
+        axisLine: { lineStyle: { color: '#30363d' } } },
+      series: [{ type: 'bar', barWidth: 14,
+        data: vals.map(v => ({
+          value: v,
+          itemStyle: { color: v >= 0 ? '#f85149' : '#3fb950' },
+          label: { show: true, position: v >= 0 ? 'right' : 'left',
+            formatter: p => (p.value>=0?'+':'') + p.value.toFixed(2) + '万', color: '#c9d1d9', fontSize: 10 }
+        }))
+      }]
+    });
+  }
+  if (D.closed_merged) {
+    renderClosed('closed-a-chart', D.closed_merged.a_stock, 'A股');
+    renderClosed('closed-h-chart', D.closed_merged.h_stock, '港股');
+  }
+
+  // ── 板块5：年度历史盈亏（柱 + 累计线，单轴）──
+  try {
+    const yd = D.yearly_data;
+    if (yd && yd.years && yd.years.length) {
+      const years = yd.years.map(y => y.year.toString());
+      const pnlData = yd.years.map(y => y.pnl / 10000);
+      const cumData = yd.cum_pnl.map(c => c.value);
+      const pnlAbs = Math.max(Math.abs(Math.min(...pnlData)), Math.abs(Math.max(...pnlData)), 0.1);
+      const cumAbs = Math.max(Math.abs(Math.min(...cumData)), Math.abs(Math.max(...cumData)), 0.1);
+      let axisMax = Math.ceil(Math.max(pnlAbs, cumAbs) / 10) * 10; axisMax = Math.max(axisMax, 10);
+      const axisStep = axisMax / 5;
+      echarts.init(document.getElementById('yearly-chart')).setOption({
+        tooltip: { trigger: 'axis',
+          formatter: function(params) {
+            let s = '<b>' + params[0].axisValue + '</b><br/>';
+            params.forEach(p => s += p.marker + ' ' + p.seriesName + ': ' + (p.value>=0?'+':'') + p.value.toFixed(2) + '万<br/>');
+            return s;
+          } },
+        legend: { data: ['当年盈亏','累计盈亏'], top: 0, textStyle: { color: '#c9d1d9' } },
+        grid: { left: '10%', right: '6%', top: '15%', bottom: '10%' },
+        xAxis: { type: 'category', data: years, boundaryGap: true, axisLabel: { color: '#6e7681', fontSize: 10, margin: 8 } },
+        yAxis: { type: 'value', min: -axisMax, max: axisMax, interval: axisStep, name: '万元',
+          nameTextStyle: { color: '#6e7681', fontSize: 10 },
+          axisLabel: { formatter: v => v.toFixed(0), color: '#6e7681', fontSize: 10 },
+          splitLine: { lineStyle: { color: '#21262d' } } },
+        series: [
+          { name: '当年盈亏', type: 'bar', barWidth: '45%',
+            data: pnlData.map(v => ({ value: v, itemStyle: { color: v>=0?'#f85149':'#3fb950' } })) },
+          { name: '累计盈亏', type: 'line', data: cumData,
+            lineStyle: { color: '#58a6ff', width: 3 }, itemStyle: { color: '#58a6ff' }, symbol: 'circle', symbolSize: 8 }
+        ]
+      });
+    }
+  } catch(e) { document.getElementById('yearly-chart').innerHTML = '<div class="placeholder">图表渲染失败: '+e.message+'</div>'; }
 }
 
-// ── 初始化 ──
+// ══ 年度数据表（始终渲染，不等 ECharts）══
+function renderYearlyTable() {
+  const yd = D.yearly_data;
+  if (!yd || !yd.years) return;
+  const el = document.getElementById('yearly-table');
+  const cols = [
+    {key:'year', title:'年份', fmt:v=>v, cls:null},
+    {key:'pnl', title:'当年盈亏(万)', fmt:v=>(v>=0?'+':'')+v.toFixed(2), cls:v=>v>=0?'positive':'negative'},
+    {key:'twr', title:'时间加权收益', fmt:v=>v.toFixed(2)+'%', cls:v=>v>=0?'positive':'negative'},
+    {key:'mwr', title:'资金加权收益', fmt:v=>v.toFixed(2)+'%', cls:v=>v>=0?'positive':'negative'},
+    {key:'dividend', title:'中证红利全收益', fmt:v=>v.toFixed(2)+'%', cls:v=>v>=0?'positive':'negative'},
+    {key:'csi300', title:'沪深300全收益', fmt:v=>v.toFixed(2)+'%', cls:v=>v>=0?'positive':'negative'},
+    {key:'chinext', title:'创业板全收益', fmt:v=>v.toFixed(2)+'%', cls:v=>v>=0?'positive':'negative'},
+    {key:'hsi', title:'恒生指数', fmt:v=>v.toFixed(2)+'%', cls:v=>v>=0?'positive':'negative'},
+    {key:'sp500', title:'标普500', fmt:v=>v.toFixed(2)+'%', cls:v=>v>=0?'positive':'negative'}
+  ];
+  let html = '<div style="background:#161b22;border:1px solid #30363d;border-radius:8px;overflow-x:auto">';
+  html += '<table style="width:100%;border-collapse:collapse;font-size:12px;color:#c9d1d9">';
+  html += '<thead><tr style="background:#21262d">';
+  cols.forEach(c => html += '<th style="padding:6px 6px;border-bottom:1px solid #30363d;white-space:nowrap;text-align:center">'+c.title+'</th>');
+  html += '</tr></thead><tbody>';
+  yd.years.forEach(y => {
+    html += '<tr>';
+    cols.forEach(c => {
+      const v = c.key==='year' ? y.year : (c.key==='pnl' ? y.pnl/10000 : y[c.key]);
+      const cls = c.cls ? c.cls(v) : '';
+      html += '<td style="padding:5px 6px;border-bottom:1px solid #21262d;text-align:center" class="'+cls+'">'+c.fmt(v)+'</td>';
+    });
+    html += '</tr>';
+  });
+  const n = yd.years.length;
+  const annualize = arr => {
+    let prod = 1; arr.forEach(v => prod *= (1 + v/100));
+    return (Math.pow(prod, 1/n) - 1) * 100;
+  };
+  const pnlAvg = yd.years.reduce((s,y) => s + y.pnl, 0) / 10000 / n;
+  html += '<tr style="background:#21262d;font-weight:600">';
+  html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="positive">年化</td>';
+  html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="'+(pnlAvg>=0?'positive':'negative')+'">'+(pnlAvg>=0?'+':'')+pnlAvg.toFixed(2)+'</td>';
+  ['twr','mwr','dividend','csi300','chinext','hsi','sp500'].forEach(k => {
+    const ann = annualize(yd.years.map(y => y[k]));
+    html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="'+(ann>=0?'positive':'negative')+'">'+ann.toFixed(2)+'%</td>';
+  });
+  html += '</tr></tbody></table></div>';
+  el.innerHTML = html;
+}
+
+// ══ 初始化 ══
 (function init() {
-  // 箭头 + 点击
   document.querySelectorAll('th[data-col]').forEach(th => {
     th.innerHTML += '<span class="sort-arrow"> ⇅</span>';
     th.addEventListener('click', () => toggleSort(th.dataset.col));
   });
-  // 筛选输入
   document.querySelectorAll('.filter-bar input').forEach(inp => {
     const handler = () => {
       try {
@@ -362,324 +423,22 @@ function renderReturnChart() {
     inp.addEventListener('input', handler);
     inp.addEventListener('keyup', handler);
   });
-  // 默认渲染
   holdings = D.holdings;
   doSort('weight', -1);
-  // 年度数据表不等图表，直接渲染
   if (D.yearly_data) renderYearlyTable();
-  // 图表：在线用 ECharts，离线超时 3 秒后切换纯 HTML 数据表
-  var chartRendered = false;
-  function tryRenderChart() {
-    if (chartRendered) return;
-    if (typeof echarts !== 'undefined') {
-      chartRendered = true;
-      renderReturnChart();
-      // 已清仓图表
-      if (D.closed_merged) {
-        renderClosedChart('closed-a-chart', D.closed_merged.a_stock, 'A股');
-        renderClosedChart('closed-h-chart', D.closed_merged.h_stock, '港股');
-      }
-      // 年度盈亏图表
-      if (D.yearly_data) renderYearlyChart();
+  const t0 = Date.now();
+  (function tryRender() {
+    if (typeof echarts !== 'undefined') { renderCharts(); return; }
+    if (Date.now() - t0 > 3000) {
+      ['return-chart','closed-a-chart','closed-h-chart','yearly-chart'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '<div class="placeholder" style="text-align:center;padding:24px">图表加载失败（离线），数据见下方表格</div>';
+      });
+      return;
     }
-  }
-  tryRenderChart();
-  if (!chartRendered) {
-    document.addEventListener('DOMContentLoaded', function() {
-      tryRenderChart();
-      if (!chartRendered) {
-        setTimeout(function() {
-          if (!chartRendered) {
-            renderReturnFallback();
-            if (D.closed_merged) {
-              renderClosedFallback('closed-a-chart', D.closed_merged.a_stock);
-              renderClosedFallback('closed-h-chart', D.closed_merged.h_stock);
-            }
-            if (D.yearly_data) renderYearlyFallback();
-          }
-        }, 3000);
-      }
-    });
-  }
+    setTimeout(tryRender, 100);
+  })();
 })();
-
-// ── 离线降级：纯 HTML 收益率数据表 ──
-function renderReturnFallback() {
-  var rs = D.return_series;
-  if (!rs || rs.length === 0) return;
-  var el = document.getElementById('return-chart');
-  var html = '<table style="width:100%;border-collapse:collapse;font-size:12px;color:#c9d1d9">';
-  html += '<thead><tr style="background:#21262d">';
-  html += '<th style="padding:6px 8px;text-align:left;border-bottom:1px solid #30363d">日期</th>';
-  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">账户</th>';
-  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">上证指数</th>';
-  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">沪深300</th>';
-  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">创业板</th>';
-  html += '</tr></thead><tbody>';
-  var colors = ['#f85149','#ff8c00','#d2991d','#bb6bd9'];
-  rs.forEach(function(r) {
-    html += '<tr>';
-    html += '<td style="padding:5px 8px;border-bottom:1px solid #21262d">' + r.date.slice(5) + '</td>';
-    [r.account, r.shanghai, r.csi300, r.chinext].forEach(function(v, i) {
-      var color = v !== null ? colors[i] : '#484f58';
-      var text = v !== null ? (v >= 0 ? '+' : '') + v.toFixed(2) + '%' : '—';
-      html += '<td style="padding:5px 8px;text-align:right;border-bottom:1px solid #21262d;color:' + color + '">' + text + '</td>';
-    });
-    html += '</tr>';
-  });
-  html += '</tbody></table>';
-  html += '<div style="text-align:center;font-size:10px;color:#484f58;margin-top:8px">离线模式 · 联网可显示交互图表</div>';
-  el.innerHTML = html;
-  el.style.display = 'block';
-  el.style.padding = '12px';
-}
-
-// ── 已清仓横向柱状图 ──
-function renderClosedChart(containerId, data, title) {
-  if (!data || (data.profit.length === 0 && data.loss.length === 0)) {
-    document.getElementById(containerId).innerHTML = '<span style="color:#6e7681">暂无数据</span>';
-    return;
-  }
-  // 合并盈亏数据：盈利在上（正值），亏损在下（负值）
-  var categories = [];
-  var values = [];
-  var codes = [];
-  data.profit.forEach(function(x) {
-    categories.push(x.code + ' ' + x.name);
-    values.push(x.pnl / 10000);
-    codes.push(x.code);
-  });
-  data.loss.forEach(function(x) {
-    categories.push(x.code + ' ' + x.name);
-    values.push(x.pnl / 10000);
-    codes.push(x.code);
-  });
-
-  // 动态坐标轴范围：以5万为步长向上取整
-  var maxProfit = 0, maxLoss = 0;
-  values.forEach(function(v) {
-    if (v > maxProfit) maxProfit = v;
-    if (v < -maxLoss) maxLoss = -v;
-  });
-  var axisMax = Math.ceil(Math.max(maxProfit, maxLoss, 0.01) / 5) * 5;
-  axisMax = Math.max(axisMax, 5);
-
-  var el = document.getElementById(containerId);
-  var chart = echarts.init(el);
-  chart.setOption({
-    tooltip: {
-      trigger: 'axis',
-      axisPointer: { type: 'shadow' },
-      formatter: function(params) {
-        var p = params[0];
-        var v = p.value;
-        var sign = v >= 0 ? '+' : '';
-        return p.name + '<br/>盈亏: ' + sign + v.toFixed(2) + '万';
-      }
-    },
-    grid: { left: '2%', right: '8%', top: 5, bottom: 5, containLabel: true },
-    xAxis: {
-      type: 'value', min: -axisMax, max: axisMax, interval: axisMax / 5,
-      axisLabel: { show: false },
-      axisTick: { show: false },
-      splitLine: { show: false },
-      axisLine: { show: false }
-    },
-    yAxis: {
-      type: 'category', data: categories, inverse: true,
-      axisLabel: { color: '#c9d1d9', fontSize: 10, width: 85, overflow: 'truncate' },
-      axisLine: { lineStyle: { color: '#30363d' } }
-    },
-    series: [{
-      type: 'bar',
-      data: values.map(function(v, i) {
-        return {
-          value: v,
-          itemStyle: { color: v >= 0 ? '#f85149' : '#3fb950' },
-          label: {
-            show: true,
-            position: v >= 0 ? 'right' : 'left',
-            formatter: function(p) { return (p.value >= 0 ? '+' : '') + p.value.toFixed(2) + '万'; },
-            color: '#c9d1d9', fontSize: 10
-          }
-        };
-      }),
-      barWidth: 16
-    }]
-  });
-  window.addEventListener('resize', function() { chart.resize(); });
-}
-
-// 已清仓图表降级
-function renderClosedFallback(containerId, data) {
-  if (!data) return;
-  var all = (data.profit||[]).concat(data.loss||[]);
-  if (all.length===0) return;
-  var el = document.getElementById(containerId);
-  var html = '<table style="width:100%;font-size:11px;color:#c9d1d9;border-collapse:collapse">';
-  all.forEach(function(x) {
-    var w = x.pnl / 10000;
-    var color = w >= 0 ? '#f85149' : '#3fb950';
-    var sign = w >= 0 ? '+' : '';
-    html += '<tr><td style="padding:2px 4px;border-bottom:1px solid #21262d">' + x.code + '</td>';
-    html += '<td style="padding:2px 4px;border-bottom:1px solid #21262d">' + x.name + '</td>';
-    html += '<td style="padding:2px 4px;text-align:right;border-bottom:1px solid #21262d;color:' + color + '">' + sign + w.toFixed(2) + '万</td></tr>';
-  });
-  html += '</table>';
-  el.innerHTML = html;
-  el.style.display = 'block';
-  el.style.padding = '8px';
-}
-
-// ── 历史年度盈亏图（竖向柱状：当年盈亏 + 累计盈亏折线，单轴）──
-function renderYearlyChart() {
-  var yd = D.yearly_data;
-  if (!yd || !yd.years || yd.years.length === 0) return;
-  var years = yd.years.map(function(y) { return y.year.toString(); });
-  var pnlData = yd.years.map(function(y) { return (y.pnl / 10000); });
-  var cumData = yd.cum_pnl.map(function(c) { return c.value; });
-
-  var pnlAbs = Math.max(Math.abs(Math.min.apply(null, pnlData)), Math.abs(Math.max.apply(null, pnlData)), 0.1);
-  var cumAbs = Math.max(Math.abs(Math.min.apply(null, cumData)), Math.abs(Math.max.apply(null, cumData)), 0.1);
-  var axisMax = Math.ceil(Math.max(pnlAbs, cumAbs) / 10) * 10;
-  axisMax = Math.max(axisMax, 10);
-  var axisStep = axisMax / 5;
-
-  var el = document.getElementById('yearly-chart');
-  var chart = echarts.init(el);
-  chart.setOption({
-    tooltip: {
-      trigger: 'axis',
-      formatter: function(params) {
-        var s = '<b>' + params[0].axisValue + '</b><br/>';
-        params.forEach(function(p) {
-          if (p.seriesName === '累计盈亏') {
-            s += p.marker + ' ' + p.seriesName + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(2) + '万<br/>';
-          } else {
-            s += p.marker + ' ' + p.seriesName + ': ' + (p.value >= 0 ? '+' : '') + p.value.toFixed(2) + '万';
-          }
-        });
-        return s;
-      }
-    },
-    legend: { data: ['当年盈亏','累计盈亏'], top: 0, textStyle: { color: '#c9d1d9' } },
-    grid: { left: '10%', right: '6%', top: '15%', bottom: '10%' },
-    xAxis: { type: 'category', data: years, boundaryGap: false, axisLabel: { color: '#6e7681', fontSize: 10, margin: 8 } },
-    yAxis: {
-      type: 'value', min: -(axisMax), max: axisMax, interval: axisStep,
-      name: '万元', nameTextStyle: { color: '#6e7681', fontSize: 10 },
-      axisLabel: { formatter: function(v) { return v.toFixed(0); }, color: '#6e7681', fontSize: 10 },
-      splitLine: { lineStyle: { color: '#21262d' } }
-    },
-    series: [
-      {
-        name: '当年盈亏', type: 'bar',
-        data: pnlData.map(function(v) {
-          return { value: v, itemStyle: { color: v >= 0 ? '#f85149' : '#3fb950' } };
-        }),
-        barWidth: '45%'
-      },
-      {
-        name: '累计盈亏', type: 'line',
-        data: cumData,
-        lineStyle: { color: '#58a6ff', width: 3 },
-        itemStyle: { color: '#58a6ff' },
-        symbol: 'circle', symbolSize: 8
-      }
-    ]
-  });
-  window.addEventListener('resize', function() { chart.resize(); });
-}
-
-// 年度数据表（始终渲染，不等 ECharts）
-function renderYearlyTable() {
-  var yd = D.yearly_data;
-  if (!yd || !yd.years) return;
-  var el = document.getElementById('yearly-table');
-  var cols = [
-    {key:'year', title:'年份', fmt:function(v){return v;} },
-    {key:'pnl', title:'当年盈亏(万)', fmt:function(v){return (v>=0?'+':'')+v.toFixed(1);}, cls:function(v){return v>=0?'positive':'negative';} },
-    {key:'twr', title:'时间加权收益', fmt:function(v){return v.toFixed(2)+'%';}, cls:function(v){return v>=0?'positive':'negative';} },
-    {key:'mwr', title:'资金加权收益', fmt:function(v){return v.toFixed(2)+'%';}, cls:function(v){return v>=0?'positive':'negative';} },
-    {key:'dividend', title:'中证红利全收益', fmt:function(v){return v.toFixed(2)+'%';}, cls:function(v){return v>=0?'positive':'negative';} },
-    {key:'csi300', title:'沪深300全收益', fmt:function(v){return v.toFixed(2)+'%';}, cls:function(v){return v>=0?'positive':'negative';} },
-    {key:'chinext', title:'创业板全收益', fmt:function(v){return v.toFixed(2)+'%';}, cls:function(v){return v>=0?'positive':'negative';} },
-    {key:'hsi', title:'恒生指数', fmt:function(v){return v.toFixed(2)+'%';}, cls:function(v){return v>=0?'positive':'negative';} },
-    {key:'sp500', title:'标普500', fmt:function(v){return v.toFixed(2)+'%';}, cls:function(v){return v>=0?'positive':'negative';} }
-  ];
-  var html = '<div style="background:#161b22;border:1px solid #30363d;border-radius:8px;overflow-x:auto">';
-  html += '<table style="width:100%;border-collapse:collapse;font-size:12px;color:#c9d1d9">';
-  html += '<thead><tr style="background:#21262d">';
-  cols.forEach(function(c) {
-    html += '<th style="padding:6px 6px;border-bottom:1px solid #30363d;white-space:nowrap;text-align:center">' + c.title + '</th>';
-  });
-  html += '</tr></thead><tbody>';
-  yd.years.forEach(function(y) {
-    html += '<tr>';
-    cols.forEach(function(c) {
-      var v = c.key==='year' ? y.year : (c.key==='pnl' ? y.pnl/10000 : y[c.key]);
-      var cls = c.cls ? c.cls(v) : '';
-      html += '<td style="padding:5px 6px;border-bottom:1px solid #21262d;text-align:center" class="' + cls + '">' + c.fmt(v) + '</td>';
-    });
-    html += '</tr>';
-  });
-    // 年化行
-  var n = yd.years.length;
-  var sum = function(arr, key) {
-    var total = 0;
-    arr.forEach(function(y) { total += y[key]; });
-    return total;
-  };
-  var annualize = function(series, key) {
-    // 几何平均年化: (∏(1+ri))^(1/n) - 1
-    var product = 1;
-    series.forEach(function(v) {
-      if (key) v = v[key];  // yearly_data
-      product *= (1 + v / 100);
-    });
-    return (Math.pow(product, 1/n) - 1) * 100;
-  };
-  var pnlAvg = sum(yd.years, 'pnl') / 10000 / n;
-  html += '<tr style="background:#21262d;font-weight:600">';
-  html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="positive">年化</td>';
-  html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="'+(pnlAvg>=0?'positive':'negative')+'">'+(pnlAvg>=0?'+':'')+pnlAvg.toFixed(2)+'</td>';
-  ['twr','mwr','dividend','csi300','chinext','hsi','sp500'].forEach(function(k) {
-    var ann = annualize(yd.years, k);
-    html += '<td style="padding:5px 6px;border-top:2px solid #30363d;text-align:center" class="'+(ann>=0?'positive':'negative')+'">'+ann.toFixed(2)+'%</td>';
-  });
-  html += '</tr>';
-  html += '</tbody></table></div>';
-  el.innerHTML = html;
-}
-
-// 年度盈亏离线降级（图表区用简洁文字替代）
-function renderYearlyFallback() {
-  var yd = D.yearly_data;
-  if (!yd || !yd.years) return;
-  var el = document.getElementById('yearly-chart');
-  var html = '<table style="width:100%;border-collapse:collapse;font-size:12px;color:#c9d1d9">';
-  html += '<thead><tr style="background:#21262d">';
-  html += '<th style="padding:6px 8px;border-bottom:1px solid #30363d">年份</th>';
-  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">当年盈亏</th>';
-  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">TWR</th>';
-  html += '<th style="padding:6px 8px;text-align:right;border-bottom:1px solid #30363d">MWR</th>';
-  html += '</tr></thead><tbody>';
-  yd.years.forEach(function(y, i) {
-    var pnl = y.pnl / 10000;
-    var pc = pnl >= 0 ? '#f85149' : '#3fb950';
-    html += '<tr>';
-    html += '<td style="padding:5px 8px;border-bottom:1px solid #21262d">' + y.year + '</td>';
-    html += '<td style="padding:5px 8px;text-align:right;border-bottom:1px solid #21262d;color:' + pc + '">' + (pnl >= 0 ? '+' : '') + pnl.toFixed(2) + '万</td>';
-    html += '<td style="padding:5px 8px;text-align:right;border-bottom:1px solid #21262d;color:#58a6ff">' + yd.twr[i].value.toFixed(2) + '%</td>';
-    html += '<td style="padding:5px 8px;text-align:right;border-bottom:1px solid #21262d;color:#d2991d">' + yd.mwr[i].value.toFixed(2) + '%</td>';
-    html += '</tr>';
-  });
-  html += '</tbody></table>';
-  html += '<div style="text-align:center;font-size:10px;color:#484f58;margin-top:8px">离线模式 · 联网可显示交互图表</div>';
-  el.innerHTML = html;
-  el.style.display = 'block';
-  el.style.padding = '12px';
-}
 </script>
 </body>
 </html>
