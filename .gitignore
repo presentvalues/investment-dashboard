@@ -13,3 +13,9 @@ __pycache__/
 *.xlsx
 *.xls
 raw/
+
+# 个人截图/隐私（防止再上传）
+*.png
+*.jpg
+*.PNG
+*.JPG
