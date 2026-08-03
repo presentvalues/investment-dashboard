@@ -20,8 +20,8 @@ h1{text-align:center;font-size:18px;color:#f0f6fc;margin:8px 0 3px;letter-spacin
 .section-title{font-size:14px;font-weight:600;color:#f0f6fc;margin-bottom:8px;padding-left:8px;border-left:3px solid #58a6ff}
 .section-sub{font-size:11px;color:#6e7681;margin:0 0 8px 11px;font-weight:400;text-align:left}
 table{width:100%;table-layout:fixed;border-collapse:collapse;font-size:12px;background:#161b22;border-radius:8px;overflow:hidden}
-.filter-bar{display:flex;gap:4px;margin-bottom:6px;align-items:center;flex-wrap:wrap}
-.filter-bar input{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 4px;border-radius:4px;font-size:11px;min-width:0}
+.filter-bar{display:grid;grid-template-columns:repeat(auto-fill,minmax(64px,1fr));gap:4px;margin-bottom:6px;align-items:center}
+.filter-bar input{background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 4px;border-radius:4px;font-size:11px;min-width:0;width:auto}
 .filter-active{border-color:#58a6ff!important;box-shadow:0 0 0 1px #58a6ff}
 .sort-arrow{font-size:10px;margin-left:2px;opacity:0.5}
 .sort-arrow.active{opacity:1;color:#58a6ff}
@@ -55,35 +55,35 @@ tr:hover{background:#1c2129}
 <body>
 
 <h1>银河证券股票持仓每日盈亏看板</h1>
-<p class="subtitle">数据日期: 2026-07-31 ｜ 生成时间: 2026-08-02 12:03:14 ｜ 数据来源: 银河证券</p>
+<p class="subtitle">数据日期: 2026-08-03 ｜ 生成时间: 2026-08-03 17:21:37 ｜ 数据来源: 银河证券</p>
 
 <!-- ── 1. 汇总卡片 ── -->
 <div class="section">
-<div class="section-title">📋 每日汇总</div>
+<div class="section-title">📋 每日账户汇总</div>
 <div class="cards">
 <div class="card">
 <div class="card-label">股票持仓市值 / 占比</div>
-<div class="card-val">96.73万<span style="font-size:13px;color:#6e7681">/97.14%</span></div>
+<div class="card-val">95.38万<span style="font-size:13px;color:#6e7681">/97.1%</span></div>
 <div class="card-sub">共 27 只持仓</div>
 </div>
 <div class="card">
 <div class="card-label">现金 / 占比</div>
-<div class="card-val">2.85万<span style="font-size:13px;color:#6e7681">/2.86%</span></div>
+<div class="card-val">2.85万<span style="font-size:13px;color:#6e7681">/2.9%</span></div>
 <div class="card-sub">国债逆回购</div>
 </div>
 <div class="card">
 <div class="card-label">总市值</div>
-<div class="card-val">99.58万</div>
+<div class="card-val">98.24万</div>
 <div class="card-sub">股票+现金</div>
 </div>
 <div class="card">
 <div class="card-label">当日盈亏 / 收益率</div>
-<div class="card-val down">-0.26万<span style="font-size:13px;color:#6e7681">/-0.27%</span></div>
-<div class="card-sub">2026年7月31日（星期五）</div>
+<div class="card-val down">-1.32万<span style="font-size:13px;color:#6e7681">/-1.37%</span></div>
+<div class="card-sub">2026年8月3日（星期一）</div>
 </div>
 <div class="card">
 <div class="card-label">持仓总盈亏 / 已清仓总盈亏</div>
-<div class="card-val up">1.45万<span style="font-size:13px;color:#6e7681">/8.39万</span></div>
+<div class="card-val up">+0.11万<span style="font-size:13px;color:#6e7681">/8.39万</span></div>
 <div class="card-sub">建仓以来</div>
 </div>
 </div>
@@ -91,25 +91,25 @@ tr:hover{background:#1c2129}
 
 <!-- ── 2. 当前持仓表格 ── -->
 <div class="section">
-<div class="section-title">📋 每日持仓 <span style="font-size:11px;color:#6e7681;font-weight:400;margin-left:8px">点击表头排序 | 输入关键词筛选</span></div>
+<div class="section-title">📋 每日账户持仓 <span style="font-size:11px;color:#6e7681;font-weight:400;margin-left:8px">点击表头排序 | 输入关键词筛选</span></div>
 <div class="filter-bar">
   <button onclick="resetDefault()" style="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;white-space:nowrap">↻ 默认</button>
-  <input type="text" id="f-code" placeholder="代码" style="width:70px">
-  <input type="text" id="f-name" placeholder="名称" style="width:90px">
-  <input type="text" id="f-weight" placeholder="仓位≥%" style="width:60px">
-  <input type="text" id="f-price" placeholder="现价≥" style="width:60px">
-  <input type="text" id="f-qty" placeholder="数量≥" style="width:60px">
-  <input type="text" id="f-mv" placeholder="市值≥" style="width:65px">
-  <input type="text" id="f-pnl" placeholder="盈亏≥" style="width:60px">
-  <input type="text" id="f-pnlrate" placeholder="盈亏率≥" style="width:65px">
-  <input type="text" id="f-days" placeholder="天数≥" style="width:50px">
+  <input type="text" id="f-code" placeholder="代码">
+  <input type="text" id="f-name" placeholder="名称">
+  <input type="text" id="f-weight" placeholder="仓位≥%">
+  <input type="text" id="f-price" placeholder="现价≥">
+  <input type="text" id="f-qty" placeholder="数量≥">
+  <input type="text" id="f-mv" placeholder="市值≥">
+  <input type="text" id="f-pnl" placeholder="盈亏≥">
+  <input type="text" id="f-pnlrate" placeholder="盈亏率≥">
+  <input type="text" id="f-days" placeholder="天数≥">
   <button onclick="clearFilters()" style="background:#21262d;border:1px solid #30363d;color:#c9d1d9;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;white-space:nowrap">✕</button>
 </div>
 <div style="background:#161b22;border:1px solid #30363d;border-radius:8px;overflow-x:auto">
 <table id="holdings-table">
 <thead><tr>
 <th style="width:36px;cursor:default;color:#6e7681">序号</th>
-<th data-col="code" style="width:66px">代码</th>
+<th data-col="code">代码</th>
 <th data-col="name">名称</th>
 <th data-col="weight">仓位占比</th>
 <th data-col="price">最新价</th>
@@ -124,16 +124,23 @@ tr:hover{background:#1c2129}
 </div>
 </div>
 
-<!-- ── 3. 账户收益率 ── -->
+<!-- ── 3. 每日账户收益率 ── -->
 <div class="section">
-<div class="section-title">📈 账户收益率</div>
-<p class="section-sub">账户收益率：+2.72% ｜ 基准 2026年7月24日 = 0%</p>
+<div class="section-title">📈 每日账户收益率</div>
+<p class="section-sub">累计账户收益率：+1.33% ｜ 2026年7月24日至今</p>
 <div class="chart-box"><div id="return-chart" style="width:100%;height:380px"></div></div>
 </div>
 
-<!-- ── 4. 已清仓股票累计收益 ── -->
+<!-- ── 4. 每月加权收益率 ── -->
 <div class="section">
-<div class="section-title">📋 已清仓股票累计收益</div>
+<div class="section-title">📈 每月加权收益率</div>
+<p class="section-sub">累计资金加权收益率 MWR：-7.29% ｜ 累计时间加权收益率 TWR：-11.59% ｜ 2021年4月至今</p>
+<div class="chart-box"><div id="monthly-return-chart" style="width:100%;height:380px"></div></div>
+</div>
+
+<!-- ── 5. 已清仓股票收益 ── -->
+<div class="section">
+<div class="section-title">📋 已清仓股票收益</div>
 <p class="section-sub">已清仓 46 只 ｜ 累计已实现净额：+8.39 万元，｜ 其中 A 股净额：+7.60 万元，港股净额：+0.79 万元</p>
 <div style="display:flex;gap:12px">
   <div style="flex:1;min-width:0">
@@ -147,7 +154,7 @@ tr:hover{background:#1c2129}
 </div>
 </div>
 
-<!-- ── 5. 年度历史盈亏 ── -->
+<!-- ── 6. 年度历史盈亏 ── -->
 <div class="section">
 <div class="section-title">📈 年度历史盈亏</div>
 <p class="section-sub">历史总盈亏：+15.52 万元 ｜ 2021年5月至今</p>
@@ -155,11 +162,11 @@ tr:hover{background:#1c2129}
 <div id="yearly-table"></div>
 </div>
 
-<div class="footer">PRESENTVALUES ｜ 辰影的自由之路 ｜ 自动生成于 2026-08-02 12:03:14</div>
+<div class="footer">PRESENTVALUES ｜ 辰影的自由之路</div>
 
 <script src="https://registry.npmmirror.com/echarts/5.5.0/files/dist/echarts.min.js" defer></script>
 <script>
-const D = {"title": "银河证券股票持仓每日盈亏看板", "generate_time": "2026-08-02 12:03:14", "latest_date": "2026-07-31", "baseline_date": "2026-07-24", "summary": {"market_value": 967309.02, "day_pnl": -2616.18, "day_pnl_rate": -0.27, "cash": 28529.44, "total_value": 995838.46, "cum_pnl": 14522.71, "closed_total_pnl": 83944.12, "account_value": null, "time_weighted_return": null, "net_deposit": 15390490.74}, "holdings": [{"code": "000807", "name": "云铝股份", "weight": 24.33, "price": 26.62, "qty": 9100, "market_value": 242242.0, "hold_pnl": 5043.53, "hold_pnl_rate": 2.13, "days": 260}, {"code": "600900", "name": "长江电力", "weight": 20.45, "price": 29.09, "qty": 7000, "market_value": 203630.0, "hold_pnl": 26882.98, "hold_pnl_rate": 15.21, "days": 243}, {"code": "000933", "name": "神火股份", "weight": 8.38, "price": 26.07, "qty": 3200, "market_value": 83424.0, "hold_pnl": -10375.14, "hold_pnl_rate": -11.06, "days": 66}, {"code": "000902", "name": "华能国际", "weight": 5.21, "price": 6.03, "qty": 10000, "market_value": 51930.36, "hold_pnl": 435.95, "hold_pnl_rate": 0.8500000000000001, "days": 180}, {"code": "001898", "name": "中煤能源", "weight": 4.63, "price": 10.71, "qty": 5000, "market_value": 46117.26, "hold_pnl": 320.48, "hold_pnl_rate": 0.7000000000000001, "days": 169}, {"code": "001030", "name": "新城发展", "weight": 3.9800000000000004, "price": 1.44, "qty": 32000, "market_value": 39684.1, "hold_pnl": -16032.48, "hold_pnl_rate": -28.78, "days": 243}, {"code": "002313", "name": "申洲国际", "weight": 3.47, "price": 44.58, "qty": 900, "market_value": 34553.07, "hold_pnl": -11359.17, "hold_pnl_rate": -24.740000000000002, "days": 270}, {"code": "159938", "name": "医药", "weight": 2.54, "price": 0.645, "qty": 39200, "market_value": 25284.0, "hold_pnl": 49.76, "hold_pnl_rate": 0.2, "days": 271}, {"code": "003690", "name": "美团-W", "weight": 2.4, "price": 92.5, "qty": 300, "market_value": 23898.3, "hold_pnl": -7316.21, "hold_pnl_rate": -23.44, "days": 232}, {"code": "512170", "name": "医疗ETF", "weight": 2.3800000000000003, "price": 0.33, "qty": 71700, "market_value": 23661.0, "hold_pnl": 1568.8, "hold_pnl_rate": 7.1, "days": 280}, {"code": "600595", "name": "中孚实业", "weight": 2.37, "price": 6.75, "qty": 3500, "market_value": 23625.0, "hold_pnl": 3217.05, "hold_pnl_rate": 15.76, "days": 38}, {"code": "001286", "name": "陕西能源", "weight": 2.31, "price": 10.47, "qty": 2200, "market_value": 23034.0, "hold_pnl": 2406.16, "hold_pnl_rate": 11.66, "days": 250}, {"code": "600887", "name": "伊利股份", "weight": 2.18, "price": 27.1, "qty": 800, "market_value": 21680.0, "hold_pnl": 873.9, "hold_pnl_rate": 4.2, "days": 270}, {"code": "009988", "name": "阿里巴巴", "weight": 2.02, "price": 117.0, "qty": 200, "market_value": 20152.08, "hold_pnl": 1526.79, "hold_pnl_rate": 8.200000000000001, "days": 36}, {"code": "159941", "name": "纳指ETF", "weight": 1.87, "price": 1.574, "qty": 11800, "market_value": 18573.2, "hold_pnl": 5977.0, "hold_pnl_rate": 47.47, "days": 320}, {"code": "002015", "name": "理想汽车", "weight": 1.8499999999999999, "price": 53.4, "qty": 400, "market_value": 18395.23, "hold_pnl": -11591.71, "hold_pnl_rate": -38.66, "days": 232}, {"code": "515180", "name": "100红利", "weight": 1.06, "price": 1.432, "qty": 7400, "market_value": 10596.8, "hold_pnl": 961.48, "hold_pnl_rate": 9.98, "days": 282}, {"code": "512890", "name": "红利低波", "weight": 1.02, "price": 1.204, "qty": 8400, "market_value": 10113.6, "hold_pnl": -12.9, "hold_pnl_rate": -0.13, "days": 271}, {"code": "001448", "name": "福寿园", "weight": 0.91, "price": 2.64, "qty": 4000, "market_value": 9094.27, "hold_pnl": -1811.4, "hold_pnl_rate": -16.61, "days": 239}, {"code": "601006", "name": "大秦铁路", "weight": 0.75, "price": 4.97, "qty": 1500, "market_value": 7455.0, "hold_pnl": -1328.33, "hold_pnl_rate": -15.120000000000001, "days": 262}, {"code": "159928", "name": "消费ETF", "weight": 0.73, "price": 0.697, "qty": 10400, "market_value": 7248.8, "hold_pnl": -683.72, "hold_pnl_rate": -8.62, "days": 282}, {"code": "002196", "name": "复星医药", "weight": 0.7100000000000001, "price": 16.42, "qty": 500, "market_value": 7070.45, "hold_pnl": 5634.05, "hold_pnl_rate": 392.21, "days": 263}, {"code": "513500", "name": "标普500", "weight": 0.63, "price": 2.509, "qty": 2500, "market_value": 6272.5, "hold_pnl": 1214.2, "hold_pnl_rate": 24.01, "days": 284}, {"code": "159892", "name": "恒生生物", "weight": 0.43, "price": 0.715, "qty": 6000, "market_value": 4290.0, "hold_pnl": 960.55, "hold_pnl_rate": 28.849999999999998, "days": 271}, {"code": "600863", "name": "华能蒙电", "weight": 0.35000000000000003, "price": 4.93, "qty": 700, "market_value": 3451.0, "hold_pnl": 17795.63, "hold_pnl_rate": 0, "days": 612}, {"code": "601155", "name": "新城控股", "weight": 0.11, "price": 11.24, "qty": 100, "market_value": 1124.0, "hold_pnl": 177.89, "hold_pnl_rate": 18.8, "days": 505}, {"code": "600305", "name": "恒顺醋业", "weight": 0.06999999999999999, "price": 7.09, "qty": 100, "market_value": 709.0, "hold_pnl": -7.11, "hold_pnl_rate": -0.9900000000000001, "days": 45}], "closed_analysis": {"A股": [{"code": "000933", "name": "神火股份", "pnl": 17933.94}, {"code": "159915", "name": "创业板", "pnl": 9883.49}, {"code": "510300", "name": "300ETF", "pnl": 6814.49}, {"code": "601898", "name": "中煤能源", "pnl": 5442.1}, {"code": "512580", "name": "环保ETF", "pnl": 4288.78}, {"code": "000651", "name": "格力电器", "pnl": -96.78}], "港股": [{"code": "01093", "name": "石药集团", "pnl": 2513.3}, {"code": "02319", "name": "蒙牛乳业", "pnl": 1560.58}, {"code": "09988", "name": "阿里巴巴", "pnl": 1373.36}, {"code": "02196", "name": "复星医药", "pnl": 1173.06}, {"code": "03690", "name": "美团-W", "pnl": 1014.5}]}, "closed_merged": {"summary": {"count": 46, "total_pnl": 83944.12, "a_total": 76037.43, "h_total": 7906.69}, "a_stock": {"profit": [{"code": "000933", "name": "神火股份", "pnl": 17933.94}, {"code": "159915", "name": "创业板", "pnl": 9883.49}, {"code": "510300", "name": "300ETF", "pnl": 6814.49}, {"code": "601898", "name": "中煤能源", "pnl": 5442.1}, {"code": "512580", "name": "环保ETF", "pnl": 4288.78}], "loss": [{"code": "000651", "name": "格力电器", "pnl": -96.78}]}, "h_stock": {"profit": [{"code": "01093", "name": "石药集团", "pnl": 2513.3}, {"code": "02319", "name": "蒙牛乳业", "pnl": 1560.58}, {"code": "09988", "name": "阿里巴巴", "pnl": 1373.36}, {"code": "02196", "name": "复星医药", "pnl": 1173.06}, {"code": "03690", "name": "美团-W", "pnl": 1014.5}], "loss": []}}, "cum_pnl_seq": [{"date": "2024-01-29", "cum_pnl": 31.51}, {"date": "2024-10-08", "cum_pnl": 3987.89}, {"date": "2025-04-09", "cum_pnl": 10556.73}, {"date": "2025-04-14", "cum_pnl": 10801.45}, {"date": "2025-05-14", "cum_pnl": 11052.01}, {"date": "2025-05-21", "cum_pnl": 11162.51}, {"date": "2025-07-03", "cum_pnl": 11266.33}, {"date": "2025-07-21", "cum_pnl": 14952.69}, {"date": "2025-07-25", "cum_pnl": 17340.55}, {"date": "2025-08-11", "cum_pnl": 17681.73}, {"date": "2025-09-04", "cum_pnl": 18703.58}, {"date": "2025-11-03", "cum_pnl": 19789.74}, {"date": "2025-11-05", "cum_pnl": 49053.57}, {"date": "2025-11-06", "cum_pnl": 49121.28}, {"date": "2025-11-24", "cum_pnl": 49548.33}, {"date": "2026-01-09", "cum_pnl": 49820.22}, {"date": "2026-02-27", "cum_pnl": 50473.22}, {"date": "2026-03-09", "cum_pnl": 57267.58}, {"date": "2026-03-12", "cum_pnl": 57839.58}, {"date": "2026-03-13", "cum_pnl": 80901.18}, {"date": "2026-03-18", "cum_pnl": 81300.06}, {"date": "2026-04-29", "cum_pnl": 81203.28}, {"date": "2026-05-08", "cum_pnl": 81915.62}, {"date": "2026-05-15", "cum_pnl": 83474.92}, {"date": "2026-07-21", "cum_pnl": 83944.12}], "yearly_data": {"years": [{"year": 2021, "begin": 0.0, "net_in": 869200.0, "pnl": -20900.0, "end": 848300.0, "twr": -2.57, "mwr": -2.3, "dividend": 9.48, "csi300": -1.96, "chinext": 7.78, "hsi": -18.55, "sp500": 13.99}, {"year": 2022, "begin": 848300.0, "net_in": 184000.0, "pnl": -114900.0, "end": 917400.0, "twr": -12.09, "mwr": -14.37, "dividend": -0.37, "csi300": -19.84, "chinext": -29.03, "hsi": -15.46, "sp500": -19.44}, {"year": 2023, "begin": 917400.0, "net_in": 376600.0, "pnl": -78600.0, "end": 1215400.0, "twr": -7.35, "mwr": -5.18, "dividend": 6.34, "csi300": -9.14, "chinext": -18.77, "hsi": -13.82, "sp500": 24.23}, {"year": 2024, "begin": 1215400.0, "net_in": 143700.0, "pnl": 284500.0, "end": 1643600.0, "twr": 21.9, "mwr": 21.26, "dividend": 18.76, "csi300": 18.24, "chinext": 14.83, "hsi": 17.67, "sp500": 23.31}, {"year": 2025, "begin": 1643600.0, "net_in": 163300.0, "pnl": 85100.0, "end": 1892000.0, "twr": 4.88, "mwr": 5.15, "dividend": 3.76, "csi300": 20.98, "chinext": 51.56, "hsi": 27.77, "sp500": 16.39}], "cum_pnl": [{"year": 2021, "value": -2.09}, {"year": 2022, "value": -13.58}, {"year": 2023, "value": -21.44}, {"year": 2024, "value": 7.01}, {"year": 2025, "value": 15.52}]}, "return_series": [{"date": "2026-07-24", "account": 0.0, "shanghai": 0.0, "csi300": 0.0, "chinext": 0.0, "total_value": 969462.34}, {"date": "2026-07-27", "account": 0.0, "shanghai": 1.15, "csi300": 1.15, "chinext": 3.16, "total_value": 969470.84}, {"date": "2026-07-28", "account": 0.42, "shanghai": -0.02, "csi300": -1.71, "chinext": -4.42, "total_value": 973492.74}, {"date": "2026-07-29", "account": 2.14, "shanghai": 0.37, "csi300": -1.05, "chinext": -2.94, "total_value": 990219.6}, {"date": "2026-07-30", "account": 3.04, "shanghai": -0.25, "csi300": -2.14, "chinext": -6.79, "total_value": 998922.73}, {"date": "2026-07-31", "account": 2.72, "shanghai": 0.47, "csi300": -1.31, "chinext": -3.93, "total_value": 995838.46}]};
+const D = {"title": "银河证券股票持仓每日盈亏看板", "generate_time": "2026-08-03 17:21:37", "latest_date": "2026-08-03", "baseline_date": "2026-07-24", "summary": {"market_value": 953843.39, "day_pnl": -13232.56, "day_pnl_rate": -1.37, "cash": 28530.12, "total_value": 982373.51, "cum_pnl": 1057.09, "closed_total_pnl": 83944.12, "account_value": null, "time_weighted_return": null, "net_deposit": 17955572.53}, "holdings": [{"code": "000807", "name": "云铝股份", "weight": 23.79, "price": 25.68, "qty": 9100, "market_value": 233688.0, "hold_pnl": -3510.47, "hold_pnl_rate": -1.48, "days": 261}, {"code": "600900", "name": "长江电力", "weight": 20.7, "price": 29.05, "qty": 7000, "market_value": 203350.0, "hold_pnl": 26602.98, "hold_pnl_rate": 15.049999999999999, "days": 244}, {"code": "000933", "name": "神火股份", "weight": 8.260000000000002, "price": 25.37, "qty": 3200, "market_value": 81184.0, "hold_pnl": -12615.14, "hold_pnl_rate": -13.450000000000001, "days": 67}, {"code": "000902", "name": "华能国际", "weight": 5.35, "price": 6.105, "qty": 10000, "market_value": 52527.42, "hold_pnl": 1031.01, "hold_pnl_rate": 2.0, "days": 181}, {"code": "001898", "name": "中煤能源", "weight": 4.61, "price": 10.52, "qty": 5000, "market_value": 45257.04, "hold_pnl": -544.02, "hold_pnl_rate": -1.1900000000000002, "days": 170}, {"code": "001030", "name": "新城发展", "weight": 3.95, "price": 1.41, "qty": 32000, "market_value": 38821.25, "hold_pnl": -16906.85, "hold_pnl_rate": -30.349999999999998, "days": 244}, {"code": "002313", "name": "申洲国际", "weight": 3.4099999999999997, "price": 43.24, "qty": 900, "market_value": 33483.33, "hold_pnl": -12429.3, "hold_pnl_rate": -27.07, "days": 271}, {"code": "159938", "name": "医药", "weight": 2.54, "price": 0.637, "qty": 39200, "market_value": 24970.4, "hold_pnl": -263.84, "hold_pnl_rate": -1.05, "days": 272}, {"code": "003690", "name": "美团-W", "weight": 2.46, "price": 93.45, "qty": 300, "market_value": 24121.31, "hold_pnl": -7093.16, "hold_pnl_rate": -22.720000000000002, "days": 233}, {"code": "512170", "name": "医疗ETF", "weight": 2.39, "price": 0.328, "qty": 71700, "market_value": 23517.6, "hold_pnl": 1425.4, "hold_pnl_rate": 6.45, "days": 281}, {"code": "600595", "name": "中孚实业", "weight": 2.36, "price": 6.63, "qty": 3500, "market_value": 23205.0, "hold_pnl": 2797.05, "hold_pnl_rate": 13.71, "days": 39}, {"code": "001286", "name": "陕西能源", "weight": 2.3, "price": 10.26, "qty": 2200, "market_value": 22572.0, "hold_pnl": 1944.16, "hold_pnl_rate": 9.43, "days": 251}, {"code": "600887", "name": "伊利股份", "weight": 2.21, "price": 27.12, "qty": 800, "market_value": 21696.0, "hold_pnl": 889.9, "hold_pnl_rate": 4.279999999999999, "days": 271}, {"code": "009988", "name": "阿里巴巴", "weight": 2.19, "price": 125.2, "qty": 200, "market_value": 21544.42, "hold_pnl": 2919.0, "hold_pnl_rate": 15.67, "days": 37}, {"code": "159941", "name": "纳指ETF", "weight": 1.9, "price": 1.585, "qty": 11800, "market_value": 18703.0, "hold_pnl": 6106.8, "hold_pnl_rate": 48.5, "days": 321}, {"code": "002015", "name": "理想汽车", "weight": 1.82, "price": 51.85, "qty": 400, "market_value": 17844.7, "hold_pnl": -12142.33, "hold_pnl_rate": -40.489999999999995, "days": 233}, {"code": "515180", "name": "100红利", "weight": 1.0699999999999998, "price": 1.424, "qty": 7400, "market_value": 10537.6, "hold_pnl": 902.28, "hold_pnl_rate": 9.36, "days": 283}, {"code": "512890", "name": "红利低波", "weight": 1.03, "price": 1.203, "qty": 8400, "market_value": 10105.2, "hold_pnl": -21.3, "hold_pnl_rate": -0.21, "days": 272}, {"code": "001448", "name": "福寿园", "weight": 0.9199999999999999, "price": 2.64, "qty": 4000, "market_value": 9085.82, "hold_pnl": -1816.3, "hold_pnl_rate": -16.66, "days": 240}, {"code": "601006", "name": "大秦铁路", "weight": 0.76, "price": 5.0, "qty": 1500, "market_value": 7500.0, "hold_pnl": -1283.33, "hold_pnl_rate": -14.610000000000001, "days": 263}, {"code": "159928", "name": "消费ETF", "weight": 0.73, "price": 0.69, "qty": 10400, "market_value": 7176.0, "hold_pnl": -756.52, "hold_pnl_rate": -9.53, "days": 283}, {"code": "002196", "name": "复星医药", "weight": 0.72, "price": 16.55, "qty": 500, "market_value": 7119.81, "hold_pnl": 5683.25, "hold_pnl_rate": 395.63, "days": 264}, {"code": "513500", "name": "标普500", "weight": 0.64, "price": 2.533, "qty": 2500, "market_value": 6332.5, "hold_pnl": 1274.2, "hold_pnl_rate": 25.19, "days": 285}, {"code": "159892", "name": "恒生生物", "weight": 0.43, "price": 0.705, "qty": 6000, "market_value": 4230.0, "hold_pnl": 900.55, "hold_pnl_rate": 27.04, "days": 272}, {"code": "600863", "name": "华能蒙电", "weight": 0.35000000000000003, "price": 4.92, "qty": 700, "market_value": 3444.0, "hold_pnl": 17788.63, "hold_pnl_rate": 0, "days": 613}, {"code": "601155", "name": "新城控股", "weight": 0.11, "price": 11.12, "qty": 100, "market_value": 1112.0, "hold_pnl": 165.89, "hold_pnl_rate": 17.53, "days": 506}, {"code": "600305", "name": "恒顺醋业", "weight": 0.06999999999999999, "price": 7.15, "qty": 100, "market_value": 715.0, "hold_pnl": -1.11, "hold_pnl_rate": -0.16, "days": 46}], "closed_analysis": {"A股": [{"code": "000933", "name": "神火股份", "pnl": 17933.94}, {"code": "159915", "name": "创业板", "pnl": 9883.49}, {"code": "510300", "name": "300ETF", "pnl": 6814.49}, {"code": "601898", "name": "中煤能源", "pnl": 5442.1}, {"code": "512580", "name": "环保ETF", "pnl": 4288.78}, {"code": "000651", "name": "格力电器", "pnl": -96.78}], "港股": [{"code": "01093", "name": "石药集团", "pnl": 2513.3}, {"code": "02319", "name": "蒙牛乳业", "pnl": 1560.58}, {"code": "09988", "name": "阿里巴巴", "pnl": 1373.36}, {"code": "02196", "name": "复星医药", "pnl": 1173.06}, {"code": "03690", "name": "美团-W", "pnl": 1014.5}]}, "closed_merged": {"summary": {"count": 46, "total_pnl": 83944.12, "a_total": 76037.43, "h_total": 7906.69}, "a_stock": {"profit": [{"code": "000933", "name": "神火股份", "pnl": 17933.94}, {"code": "159915", "name": "创业板", "pnl": 9883.49}, {"code": "510300", "name": "300ETF", "pnl": 6814.49}, {"code": "601898", "name": "中煤能源", "pnl": 5442.1}, {"code": "512580", "name": "环保ETF", "pnl": 4288.78}], "loss": [{"code": "000651", "name": "格力电器", "pnl": -96.78}]}, "h_stock": {"profit": [{"code": "01093", "name": "石药集团", "pnl": 2513.3}, {"code": "02319", "name": "蒙牛乳业", "pnl": 1560.58}, {"code": "09988", "name": "阿里巴巴", "pnl": 1373.36}, {"code": "02196", "name": "复星医药", "pnl": 1173.06}, {"code": "03690", "name": "美团-W", "pnl": 1014.5}], "loss": []}}, "cum_pnl_seq": [{"date": "2024-01-29", "cum_pnl": 31.51}, {"date": "2024-10-08", "cum_pnl": 3987.89}, {"date": "2025-04-09", "cum_pnl": 10556.73}, {"date": "2025-04-14", "cum_pnl": 10801.45}, {"date": "2025-05-14", "cum_pnl": 11052.01}, {"date": "2025-05-21", "cum_pnl": 11162.51}, {"date": "2025-07-03", "cum_pnl": 11266.33}, {"date": "2025-07-21", "cum_pnl": 14952.69}, {"date": "2025-07-25", "cum_pnl": 17340.55}, {"date": "2025-08-11", "cum_pnl": 17681.73}, {"date": "2025-09-04", "cum_pnl": 18703.58}, {"date": "2025-11-03", "cum_pnl": 19789.74}, {"date": "2025-11-05", "cum_pnl": 49053.57}, {"date": "2025-11-06", "cum_pnl": 49121.28}, {"date": "2025-11-24", "cum_pnl": 49548.33}, {"date": "2026-01-09", "cum_pnl": 49820.22}, {"date": "2026-02-27", "cum_pnl": 50473.22}, {"date": "2026-03-09", "cum_pnl": 57267.58}, {"date": "2026-03-12", "cum_pnl": 57839.58}, {"date": "2026-03-13", "cum_pnl": 80901.18}, {"date": "2026-03-18", "cum_pnl": 81300.06}, {"date": "2026-04-29", "cum_pnl": 81203.28}, {"date": "2026-05-08", "cum_pnl": 81915.62}, {"date": "2026-05-15", "cum_pnl": 83474.92}, {"date": "2026-07-21", "cum_pnl": 83944.12}], "yearly_data": {"years": [{"year": 2021, "begin": 0.0, "net_in": 869200.0, "pnl": -20900.0, "end": 848300.0, "twr": -2.57, "mwr": -2.3, "dividend": 9.48, "csi300": -1.96, "chinext": 7.78, "hsi": -18.55, "sp500": 13.99}, {"year": 2022, "begin": 848300.0, "net_in": 184000.0, "pnl": -114900.0, "end": 917400.0, "twr": -12.09, "mwr": -14.37, "dividend": -0.37, "csi300": -19.84, "chinext": -29.03, "hsi": -15.46, "sp500": -19.44}, {"year": 2023, "begin": 917400.0, "net_in": 376600.0, "pnl": -78600.0, "end": 1215400.0, "twr": -7.35, "mwr": -5.18, "dividend": 6.34, "csi300": -9.14, "chinext": -18.77, "hsi": -13.82, "sp500": 24.23}, {"year": 2024, "begin": 1215400.0, "net_in": 143700.0, "pnl": 284500.0, "end": 1643600.0, "twr": 21.9, "mwr": 21.26, "dividend": 18.76, "csi300": 18.24, "chinext": 14.83, "hsi": 17.67, "sp500": 23.31}, {"year": 2025, "begin": 1643600.0, "net_in": 163300.0, "pnl": 85100.0, "end": 1892000.0, "twr": 4.88, "mwr": 5.15, "dividend": 3.76, "csi300": 20.98, "chinext": 51.56, "hsi": 27.77, "sp500": 16.39}], "cum_pnl": [{"year": 2021, "value": -2.09}, {"year": 2022, "value": -13.58}, {"year": 2023, "value": -21.44}, {"year": 2024, "value": 7.01}, {"year": 2025, "value": 15.52}]}, "return_series": [{"date": "2026-07-24", "account": 0.0, "shanghai": 0.0, "csi300": 0.0, "chinext": 0.0, "total_value": 969463.02}, {"date": "2026-07-27", "account": 0.0, "shanghai": 1.15, "csi300": 1.15, "chinext": 3.16, "total_value": 969471.52}, {"date": "2026-07-28", "account": 0.42, "shanghai": -0.02, "csi300": -1.71, "chinext": -4.42, "total_value": 973493.42}, {"date": "2026-07-29", "account": 2.14, "shanghai": 0.37, "csi300": -1.05, "chinext": -2.94, "total_value": 990220.28}, {"date": "2026-07-30", "account": 3.04, "shanghai": -0.25, "csi300": -2.14, "chinext": -6.79, "total_value": 998923.41}, {"date": "2026-07-31", "account": 2.72, "shanghai": 0.47, "csi300": -1.31, "chinext": -3.93, "total_value": 995839.14}, {"date": "2026-08-03", "account": 1.33, "shanghai": -0.12, "csi300": -2.28, "chinext": -5.12, "total_value": 982373.51}], "monthly_return": {"source": "有知有行", "start": "2021-04", "end": "2026-06", "count": 63, "months": [{"date": "2021-04", "twr": 0.0, "mwr": 0.0, "benchmark": 0.0, "csi_dividend": 0.0}, {"date": "2021-05", "twr": 4.6, "mwr": 4.6, "benchmark": 0.64, "csi_dividend": 5.78}, {"date": "2021-06", "twr": 4.98, "mwr": 4.9, "benchmark": 1.29, "csi_dividend": 5.93}, {"date": "2021-07", "twr": -1.72, "mwr": -2.19, "benchmark": 1.94, "csi_dividend": 1.67}, {"date": "2021-08", "twr": -5.93, "mwr": -6.54, "benchmark": 2.6, "csi_dividend": 12.92}, {"date": "2021-09", "twr": -2.93, "mwr": -3.33, "benchmark": 3.26, "csi_dividend": 10.13}, {"date": "2021-10", "twr": -3.06, "mwr": -3.43, "benchmark": 3.92, "csi_dividend": 4.31}, {"date": "2021-11", "twr": -4.03, "mwr": -4.42, "benchmark": 4.59, "csi_dividend": 6.0}, {"date": "2021-12", "twr": -2.3, "mwr": -2.57, "benchmark": 5.26, "csi_dividend": 9.48}, {"date": "2022-01", "twr": -10.66, "mwr": -11.41, "benchmark": 5.94, "csi_dividend": 5.28}, {"date": "2022-02", "twr": -9.84, "mwr": -10.44, "benchmark": 6.62, "csi_dividend": 9.68}, {"date": "2022-03", "twr": -16.36, "mwr": -17.43, "benchmark": 7.31, "csi_dividend": 11.45}, {"date": "2022-04", "twr": -18.78, "mwr": -19.96, "benchmark": 8.0, "csi_dividend": 5.59}, {"date": "2022-05", "twr": -22.31, "mwr": -23.74, "benchmark": 8.69, "csi_dividend": 8.07}, {"date": "2022-06", "twr": -10.65, "mwr": -9.93, "benchmark": 9.39, "csi_dividend": 10.44}, {"date": "2022-07", "twr": -19.72, "mwr": -20.46, "benchmark": 10.1, "csi_dividend": 8.67}, {"date": "2022-08", "twr": -18.93, "mwr": -19.32, "benchmark": 10.81, "csi_dividend": 10.73}, {"date": "2022-09", "twr": -27.99, "mwr": -29.84, "benchmark": 11.52, "csi_dividend": 7.8}, {"date": "2022-10", "twr": -39.96, "mwr": -43.9, "benchmark": 12.24, "csi_dividend": 1.02}, {"date": "2022-11", "twr": -26.99, "mwr": -28.31, "benchmark": 12.96, "csi_dividend": 13.38}, {"date": "2022-12", "twr": -16.33, "mwr": -14.96, "benchmark": 13.69, "csi_dividend": 9.08}, {"date": "2023-01", "twr": -6.95, "mwr": -3.6, "benchmark": 14.42, "csi_dividend": 12.93}, {"date": "2023-02", "twr": -13.28, "mwr": -11.19, "benchmark": 15.15, "csi_dividend": 16.21}, {"date": "2023-03", "twr": -13.18, "mwr": -10.99, "benchmark": 15.89, "csi_dividend": 14.66}, {"date": "2023-04", "twr": -13.39, "mwr": -11.18, "benchmark": 16.64, "csi_dividend": 20.07}, {"date": "2023-05", "twr": -17.35, "mwr": -15.85, "benchmark": 17.39, "csi_dividend": 16.5}, {"date": "2023-06", "twr": -13.3, "mwr": -10.64, "benchmark": 18.15, "csi_dividend": 15.51}, {"date": "2023-07", "twr": -7.94, "mwr": -3.81, "benchmark": 18.91, "csi_dividend": 22.75}, {"date": "2023-08", "twr": -10.41, "mwr": -7.17, "benchmark": 19.67, "csi_dividend": 17.98}, {"date": "2023-09", "twr": -16.74, "mwr": -15.78, "benchmark": 20.44, "csi_dividend": 20.42}, {"date": "2023-10", "twr": -16.9, "mwr": -15.79, "benchmark": 21.22, "csi_dividend": 16.66}, {"date": "2023-11", "twr": -16.27, "mwr": -14.58, "benchmark": 22.0, "csi_dividend": 16.91}, {"date": "2023-12", "twr": -20.67, "mwr": -21.03, "benchmark": 22.78, "csi_dividend": 16.0}, {"date": "2024-01", "twr": -32.76, "mwr": -38.73, "benchmark": 23.57, "csi_dividend": 18.56}, {"date": "2024-02", "twr": -22.53, "mwr": -23.11, "benchmark": 24.37, "csi_dividend": 26.46}, {"date": "2024-03", "twr": -21.67, "mwr": -21.59, "benchmark": 25.17, "csi_dividend": 25.68}, {"date": "2024-04", "twr": -16.31, "mwr": -13.5, "benchmark": 25.97, "csi_dividend": 28.64}, {"date": "2024-05", "twr": -15.91, "mwr": -12.75, "benchmark": 26.78, "csi_dividend": 33.57}, {"date": "2024-06", "twr": -18.45, "mwr": -16.44, "benchmark": 27.6, "csi_dividend": 28.79}, {"date": "2024-07", "twr": -23.75, "mwr": -24.24, "benchmark": 28.42, "csi_dividend": 25.38}, {"date": "2024-08", "twr": -22.71, "mwr": -22.41, "benchmark": 29.24, "csi_dividend": 21.4}, {"date": "2024-09", "twr": -0.83, "mwr": 10.83, "benchmark": 30.08, "csi_dividend": 40.24}, {"date": "2024-10", "twr": -3.84, "mwr": 6.13, "benchmark": 30.91, "csi_dividend": 31.01}, {"date": "2024-11", "twr": -5.0, "mwr": 4.33, "benchmark": 31.76, "csi_dividend": 33.0}, {"date": "2024-12", "twr": -3.8, "mwr": 6.07, "benchmark": 32.6, "csi_dividend": 37.76}, {"date": "2025-01", "twr": -9.05, "mwr": -1.68, "benchmark": 33.46, "csi_dividend": 33.79}, {"date": "2025-02", "twr": 1.63, "mwr": 13.97, "benchmark": 34.31, "csi_dividend": 31.65}, {"date": "2025-03", "twr": 3.6, "mwr": 16.8, "benchmark": 35.18, "csi_dividend": 34.06}, {"date": "2025-04", "twr": -0.31, "mwr": 10.77, "benchmark": 36.05, "csi_dividend": 32.62}, {"date": "2025-05", "twr": -4.0, "mwr": 5.04, "benchmark": 36.92, "csi_dividend": 35.91}, {"date": "2025-06", "twr": -4.66, "mwr": 4.02, "benchmark": 37.81, "csi_dividend": 37.57}, {"date": "2025-07", "twr": -3.0, "mwr": 6.48, "benchmark": 38.69, "csi_dividend": 41.15}, {"date": "2025-08", "twr": 2.54, "mwr": 14.68, "benchmark": 39.58, "csi_dividend": 42.7}, {"date": "2025-09", "twr": 2.85, "mwr": 15.05, "benchmark": 40.48, "csi_dividend": 41.13}, {"date": "2025-10", "twr": 2.36, "mwr": 14.2, "benchmark": 41.39, "csi_dividend": 45.75}, {"date": "2025-11", "twr": 1.16, "mwr": 12.34, "benchmark": 42.3, "csi_dividend": 43.82}, {"date": "2025-12", "twr": -0.67, "mwr": 9.59, "benchmark": 43.21, "csi_dividend": 42.94}, {"date": "2026-01", "twr": 1.7, "mwr": 13.0, "benchmark": 44.13, "csi_dividend": 48.31}, {"date": "2026-02", "twr": -0.99, "mwr": 9.0, "benchmark": 45.06, "csi_dividend": 51.77}, {"date": "2026-03", "twr": -1.43, "mwr": 8.25, "benchmark": 45.99, "csi_dividend": 49.22}, {"date": "2026-04", "twr": -0.29, "mwr": 9.92, "benchmark": 46.93, "csi_dividend": 52.93}, {"date": "2026-05", "twr": -1.97, "mwr": 7.31, "benchmark": 47.88, "csi_dividend": 46.34}, {"date": "2026-06", "twr": -11.59, "mwr": -7.29, "benchmark": 48.83, "csi_dividend": 33.19}]}};
 
 // ══ 持仓表格：排序 + 筛选 ══
 let holdings, sortCol, sortDir;
@@ -245,7 +252,8 @@ function renderCharts() {
       const leftStep = leftTop / 5;
       const rightTop = Math.ceil(retMax / 5) * 5;
       const rightBottom = Math.floor(retMin / 5) * 5;
-      echarts.init(document.getElementById('return-chart')).setOption({
+      const rtChart = echarts.init(document.getElementById('return-chart'));
+      rtChart.setOption({
         tooltip: {
           trigger: 'axis',
           formatter: function(params) {
@@ -286,6 +294,9 @@ function renderCharts() {
              lineStyle: { color: '#bb6bd9', width: 0.75 }, itemStyle: { color: '#bb6bd9' }, symbol: 'triangle', symbolSize: 7 }
         ]
       });
+      // 防止容器宽度未就绪导致窄图：延迟重绘 + 窗口自适应
+      setTimeout(() => rtChart.resize(), 300);
+      window.addEventListener('resize', () => rtChart.resize());
     }
   } catch(e) { document.getElementById('return-chart').innerHTML = '<div class="placeholder">图表渲染失败: '+e.message+'</div>'; }
 
@@ -299,7 +310,8 @@ function renderCharts() {
     let maxP = 0, maxL = 0;
     vals.forEach(v => { if (v > maxP) maxP = v; if (v < -maxL) maxL = -v; });
     let axisMax = Math.ceil(Math.max(maxP, maxL, 0.01) / 5) * 5; axisMax = Math.max(axisMax, 5);
-    echarts.init(el).setOption({
+    const cChart = echarts.init(el);
+    cChart.setOption({
       tooltip: { trigger: 'axis', axisPointer: { type: 'shadow' },
         formatter: p => p[0].name + '<br/>盈亏: ' + (p[0].value>=0?'+':'') + p[0].value.toFixed(2) + '万' },
       grid: { left: '2%', right: '12%', top: 5, bottom: 5, containLabel: true },
@@ -317,6 +329,8 @@ function renderCharts() {
         }))
       }]
     });
+    setTimeout(() => cChart.resize(), 300);
+    window.addEventListener('resize', () => cChart.resize());
   }
   if (D.closed_merged) {
     renderClosed('closed-a-chart', D.closed_merged.a_stock, 'A股');
@@ -334,7 +348,8 @@ function renderCharts() {
       const cumAbs = Math.max(Math.abs(Math.min(...cumData)), Math.abs(Math.max(...cumData)), 0.1);
       let axisMax = Math.ceil(Math.max(pnlAbs, cumAbs) / 10) * 10; axisMax = Math.max(axisMax, 10);
       const axisStep = axisMax / 5;
-      echarts.init(document.getElementById('yearly-chart')).setOption({
+      const yChart = echarts.init(document.getElementById('yearly-chart'));
+      yChart.setOption({
         tooltip: { trigger: 'axis',
           formatter: function(params) {
             let s = '<b>' + params[0].axisValue + '</b><br/>';
@@ -355,8 +370,55 @@ function renderCharts() {
             lineStyle: { color: '#58a6ff', width: 3 }, itemStyle: { color: '#58a6ff' }, symbol: 'circle', symbolSize: 8 }
         ]
       });
+      setTimeout(() => yChart.resize(), 300);
+      window.addEventListener('resize', () => yChart.resize());
     }
   } catch(e) { document.getElementById('yearly-chart').innerHTML = '<div class="placeholder">图表渲染失败: '+e.message+'</div>'; }
+
+  // ── 板块6：每月时间资金加权收益率（累计净值）──
+  try {
+    const mr = D.monthly_return;
+    if (mr && mr.months && mr.months.length) {
+      const dates = mr.months.map(m => m.date.slice(2));  // 21-05 短格式
+      const mChart = echarts.init(document.getElementById('monthly-return-chart'));
+      mChart.setOption({
+        tooltip: { trigger: 'axis',
+          formatter: function(params) {
+            let s = '<b>' + mr.months[params[0].dataIndex].date + '</b><br/>';
+            params.forEach(p => s += p.marker + ' ' + p.seriesName + ': ' + (p.value>=0?'+':'') + p.value.toFixed(2) + '%<br/>');
+            return s;
+          } },
+        legend: { data: ['资金加权收益率','8%年化基准','中证红利全收益'], top: 0, textStyle: { color: '#c9d1d9' } },
+        grid: { left: '10%', right: '6%', top: '15%', bottom: '10%' },
+        xAxis: { type: 'category', data: dates, boundaryGap: false,
+          axisLabel: {
+            color: '#6e7681', fontSize: 10,
+            formatter: function(v, idx) {
+              // 季度刻度：1/4/7/10 月显示 22Q1/22Q2/22Q3/22Q4，首点强制显示
+              const m = parseInt(v.slice(3), 10);
+              const q = {1:'Q1',4:'Q2',7:'Q3',10:'Q4'}[m];
+              if (q) return v.slice(0,2) + q;
+              return idx === 0 ? v.slice(0,2) + 'Q2' : '';
+            }
+          } },
+        yAxis: { type: 'value', scale: true, name: '累计收益率(%)',
+          nameTextStyle: { color: '#6e7681', fontSize: 10 },
+          axisLabel: { formatter: v => v.toFixed(0)+'%', color: '#6e7681', fontSize: 10 },
+          splitLine: { lineStyle: { color: '#21262d' } } },
+        series: [
+          { name: '资金加权收益率', type: 'line', data: mr.months.map(m => m.mwr),
+            lineStyle: { color: '#a371f7', width: 2 }, itemStyle: { color: '#a371f7' }, symbol: 'none' },
+          { name: '8%年化基准', type: 'line', data: mr.months.map(m => m.benchmark),
+            lineStyle: { color: '#e6edf3', width: 1, type: 'dashed' }, itemStyle: { color: '#e6edf3' }, symbol: 'none' },
+          { name: '中证红利全收益', type: 'line',
+            data: mr.months.map(m => (m.csi_dividend !== undefined ? m.csi_dividend : null)),
+            lineStyle: { color: '#e3b341', width: 1, type: 'dashed' }, itemStyle: { color: '#e3b341' }, symbol: 'none' }
+        ]
+      });
+      setTimeout(() => mChart.resize(), 300);
+      window.addEventListener('resize', () => mChart.resize());
+    }
+  } catch(e) { document.getElementById('monthly-return-chart').innerHTML = '<div class="placeholder">图表渲染失败: '+e.message+'</div>'; }
 }
 
 // ══ 年度数据表（始终渲染，不等 ECharts）══
